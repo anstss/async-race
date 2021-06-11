@@ -1,9 +1,9 @@
 import "./car-container.scss";
 import racingFlag from "../../assets/racing-flag.svg";
 import React from "react";
-import CarInterface from "../../interfaces/car-interface";
+import CarPropsInterface from "../../interfaces/car-props-interface";
 
-const CarContainer = ({ carName, carColor }: CarInterface) => {
+const CarContainer = ({ carName, carColor }: CarPropsInterface) => {
     return (
         <div>
             <div className='car-container__header d-flex align-items-center my-3'>
@@ -11,10 +11,10 @@ const CarContainer = ({ carName, carColor }: CarInterface) => {
                 <button className='btn btn-danger mx-2'>Remove</button>
                 <div className='car-container__car-name mx-3'>{carName}</div>
             </div>
-            <div className='car-container__track-container'>
-                <button className='btn btn-outline-success'>Start engine</button>
-                <button className='btn btn-outline-warning mx-2'>Stop engine</button>
-                <div className='car-container__track border-bottom d-flex align-items-end my-3'>
+            <div className='car-container__track-container d-flex border-bottom align-items-end'>
+                <button className='btn btn-sm btn-outline-success mb-2'>Start</button>
+                <button className='btn btn-sm btn-outline-warning mx-2 mb-2'>Stop</button>
+                <div className='car-container__track d-flex'>
                     <svg className='car' width="594" height="239" viewBox="0 0 594 239" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M79.1043 60.302C91.5233 52.56 104.447 45.668 117.796 39.666L148.32 70.19H454.85C493.73 70.19 531.927 80.335 565.685 99.627C576.641 105.876 583.394 117.524 583.394 130.132V188.847H59.3283L27.2913 175.993C16.7803 171.791 9.88831 161.606 9.88831 150.284V70.19L79.1043 60.302Z" fill={carColor}/>
                         <path d="M117.796 39.666C159.82 20.701 205.384 10.882 251.492 10.862H263.14C317.564 10.862 371.117 24.517 418.896 50.582L454.849 70.19H148.32L117.796 39.666Z" fill="#4394CC"/>
