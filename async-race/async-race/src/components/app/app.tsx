@@ -2,6 +2,7 @@ import './app.scss';
 import React from 'react';
 import Nav from "../nav/nav";
 import CarSettings from "../car-settings/car-settings";
+import CarContainer from "../car-container/car-container";
 
 const App = () => {
     return (
@@ -9,9 +10,7 @@ const App = () => {
             <h1 className='app-title text-center my-2'>Async Race</h1>
             <Nav/>
             <CarSettings/>
-            My App
-            <button className='btn btn-primary'>Test</button>
-            <img className='car' src='./car.svg'/>
+            <CarContainer carName='Tesla' carColor='red'/>
         </div>
     )
 }
