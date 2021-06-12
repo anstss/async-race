@@ -1,4 +1,4 @@
 export default interface CarSettingPropsInterface {
-    placeholder: string,
-    buttonText: string
+  placeholder: string,
+  buttonText: string
 }
