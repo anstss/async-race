@@ -58,11 +58,22 @@ export const createCar = (car: CarInterface) => {
   }
 }
 
+//TODO: findCar()
 export const selectCar = (id: number) => {
   const cars = store.getState().cars;
   const car = cars.find(car => car.id === id);
   return {
     type: 'SELECT_CAR',
     payload: car
+  }
+}
+
+export const updateCar = () => {
+  const currentCarId = store.getState().selectedCar;
+  // const cars = store.getState().cars;
+  // const currentCar = cars.find(car => car.id === currentCarId);
+  return {
+    type: 'UPDATE_CAR',
+    payload: currentCarId
   }
 }

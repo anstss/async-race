@@ -50,6 +50,24 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         nameUpdateCar: action.payload.name,
         colorUpdateCar: action.payload.color
       }
+    case 'UPDATE_CAR':
+      const carId = action.payload;
+      const carIndex = state.cars.findIndex((car) => car.id === carId);
+      console.log(carIndex)
+      console.log(state.cars)
+      const updatedCar = {
+        id: carId,
+        name: state.nameUpdateCar,
+        color: state.colorUpdateCar
+      }
+      return {
+        ...state,
+        cars: [
+          ...state.cars.slice(0, carIndex),
+          updatedCar,
+          ...state.cars.slice(carIndex + 1)
+        ]
+      }
 
     default:
       return state;
