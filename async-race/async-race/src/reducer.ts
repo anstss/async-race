@@ -50,11 +50,10 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         nameUpdateCar: action.payload.name,
         colorUpdateCar: action.payload.color
       }
+    //TODO: findCarIndex()
     case 'UPDATE_CAR':
       const carId = action.payload;
       const carIndex = state.cars.findIndex((car) => car.id === carId);
-      console.log(carIndex)
-      console.log(state.cars)
       const updatedCar = {
         id: carId,
         name: state.nameUpdateCar,
@@ -66,6 +65,16 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
           ...state.cars.slice(0, carIndex),
           updatedCar,
           ...state.cars.slice(carIndex + 1)
+        ]
+      }
+    case 'REMOVE_CAR':
+      const id = action.payload;
+      const index = state.cars.findIndex((car) => car.id === id);
+      return {
+        ...state,
+        cars: [
+          ...state.cars.slice(0, index),
+          ...state.cars.slice(index + 1)
         ]
       }
 

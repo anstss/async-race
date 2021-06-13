@@ -1,8 +1,6 @@
 import CarInterface from "./interfaces/car-interface";
 import {AsyncRaceApiService} from "./services/async-race-api-service";
 import store from "./store";
-import {useContext} from "react";
-import {AsyncRaceApiServiceContext} from "./components/async-race-api-service-context/async-race-api-service-context";
 
 const asyncRaceApiService = new AsyncRaceApiService();
 
@@ -75,5 +73,13 @@ export const updateCar = () => {
   return {
     type: 'UPDATE_CAR',
     payload: currentCarId
+  }
+}
+
+export const removeCar = (id: number) => {
+  asyncRaceApiService.deleteCar(id);
+  return {
+    type: 'REMOVE_CAR',
+    payload: id
   }
 }

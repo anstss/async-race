@@ -8,13 +8,15 @@ import * as actions from "../../actions";
 import StateInterface from "../../interfaces/state-interface";
 
 //FIXME: fix any type
-const CarContainer = ({id, name, color, selectCar}: {id: number, name: string, color: string, selectCar: any}) => {
+const CarContainer = ({id, name, color, selectCar, removeCar}:
+                        {id: number, name: string, color: string, selectCar: any, removeCar: any}) => {
   return (
     <div>
       <div className='car-container__header d-flex align-items-center my-3'>
         <button className='btn btn-primary'
                 onClick={() => selectCar(id)}>Select</button>
-        <button className='btn btn-danger mx-2'>Remove</button>
+        <button className='btn btn-danger mx-2'
+                onClick={() => removeCar(id)}>Remove</button>
         <div className='car-container__car-name mx-3'>{name}</div>
       </div>
       <div className='car-container__track-container d-flex border-bottom align-items-end'>

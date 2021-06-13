@@ -41,7 +41,7 @@ const CarSettings = ({
     // console.log(store.getState())
     return colorInputUpdateCar.current
   };
-
+  //TODO: move requests to actions
   const sendRequestCreateCar = async () => {
     const {nameCreateCar, colorCreateCar} = store.getState();
     const car = await asyncRaceApiService.createCar(nameCreateCar, colorCreateCar);
