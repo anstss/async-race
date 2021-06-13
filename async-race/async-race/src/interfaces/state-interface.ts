@@ -5,5 +5,6 @@ export default interface StateInterface {
   nameCreateCar: string,
   nameUpdateCar: string,
   colorCreateCar: string,
-  colorUpdateCar: string
+  colorUpdateCar: string,
+  selectedCar: number | null
 }

@@ -2,13 +2,18 @@ import "./car-container.scss";
 import racingFlag from "../../assets/racing-flag.svg";
 import React from "react";
 import CarInterface from "../../interfaces/car-interface";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
+import * as actions from "../../actions";
+import StateInterface from "../../interfaces/state-interface";
 
-const CarContainer = (car: CarInterface) => {
-  const {name, color} = car;
+//FIXME: fix any type
+const CarContainer = ({id, name, color, selectCar}: {id: number, name: string, color: string, selectCar: any}) => {
   return (
     <div>
       <div className='car-container__header d-flex align-items-center my-3'>
-        <button className='btn btn-primary'>Select</button>
+        <button className='btn btn-primary'
+                onClick={() => selectCar(id)}>Select</button>
         <button className='btn btn-danger mx-2'>Remove</button>
         <div className='car-container__car-name mx-3'>{name}</div>
       </div>
@@ -54,4 +59,12 @@ const CarContainer = (car: CarInterface) => {
   )
 }
 
-export default CarContainer;
+const mapStateToProps = (state: StateInterface) => {
+  return state;
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CarContainer);

@@ -52,9 +52,17 @@ export const getColorUpdateCar = (target: HTMLInputElement) => {
 // }
 
 export const createCar = (car: CarInterface) => {
-  console.log("YES")
   return {
     type: 'CREATE_CAR',
+    payload: car
+  }
+}
+
+export const selectCar = (id: number) => {
+  const cars = store.getState().cars;
+  const car = cars.find(car => car.id === id);
+  return {
+    type: 'SELECT_CAR',
     payload: car
   }
 }

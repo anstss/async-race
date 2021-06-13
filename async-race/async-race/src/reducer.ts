@@ -6,7 +6,8 @@ const initialState: StateInterface = {
   nameCreateCar: '',
   nameUpdateCar: '',
   colorCreateCar: '#000000',
-  colorUpdateCar: '#000000'
+  colorUpdateCar: '#000000',
+  selectedCar: null
 }
 
 //FIXME: fix any type
@@ -41,6 +42,13 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
       return {
         ...state,
         cars: [...state.cars, action.payload]
+      }
+    case 'SELECT_CAR':
+      return {
+        ...state,
+        selectedCar: action.payload.id,
+        nameUpdateCar: action.payload.name,
+        colorUpdateCar: action.payload.color
       }
 
     default:

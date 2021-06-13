@@ -12,11 +12,11 @@ import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/asyn
 const CarSettings = ({
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
-                       createCar
+                       createCar, nameUpdateCar, colorUpdateCar
                      }: any) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
-
+  //TODO: handler => export getColor()
   const nameInputCreateCar = useRef(null);
   const handlerOnChangeNameCreateCar = () => {
     // console.log(store.getState())
@@ -47,7 +47,7 @@ const CarSettings = ({
     createCar(car);
   }
 
-
+  //TODO: Car setting!!!!
   return (
     <div className='mt-4'>
       <div className='car-setting form-group d-flex justify-content-center my-3'>
@@ -61,9 +61,11 @@ const CarSettings = ({
       </div>
       <div className='car-setting form-group d-flex justify-content-center my-3'>
         <input ref={nameInputUpdateCar} type='text'
+               value={nameUpdateCar}
                className='form-control car-setting__input col-xs-2 mx-3' placeholder='Enter new car name'
                onInput={() => getNameUpdateCar(handlerOnChangeNameUpdateCar())}/>
         <input ref={colorInputUpdateCar} type='color' className='form-control car-setting__color col-xs-2'
+               value={colorUpdateCar}
                onChange={() => getColorUpdateCar(handlerOnChangeColorUpdateCar())}/>
         <button className='btn btn-primary mx-3 btn-size-normal'>Update car</button>
       </div>

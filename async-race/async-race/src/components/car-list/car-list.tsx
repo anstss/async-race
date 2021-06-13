@@ -8,7 +8,6 @@ import CarInterface from "../../interfaces/car-interface";
 
 const CarList = () => {
   const {cars} = store.getState();
-  console.log(cars)
   return (
     <ul className='list-unstyled'>
       {
