@@ -1,3 +1,5 @@
+import TimerInterface from "../interfaces/timer-inteface";
+
 export class AsyncRaceApiService {
     private apiBase = 'http://127.0.0.1:3000';
     private apiBaseGarage = `${this.apiBase}/garage`;
@@ -55,7 +57,17 @@ export class AsyncRaceApiService {
     //     const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=${status}`);
     //     return await response.json();
     // }
-    startAnimation = (id: number, animationTime: number, trackElem: HTMLElement, carImage: HTMLElement) => {
+    timers: TimerInterface[] = [];
+
+    private clearAndDeleteCurrentCarTimer = (id: number) => {
+        const currentCarTimerIndex = this.timers.findIndex((timer) => timer.timerId === `timerId${id}`);
+        if (currentCarTimerIndex !== -1) {
+            window.clearInterval(this.timers[currentCarTimerIndex].timer);
+            this.timers.splice(currentCarTimerIndex, 1);
+        }
+    }
+
+    private startAnimation = (id: number, animationTime: number, trackElem: HTMLElement, carImage: HTMLElement) => {
         const trackLength = trackElem.offsetWidth;
         const carLength = carImage.getBoundingClientRect().width;
         const startTime = Date.now();
@@ -63,19 +75,22 @@ export class AsyncRaceApiService {
         let currentPos = 0;
         let timer = window.setInterval(() => {
             let timePassed = Date.now() - startTime;
-            console.log(timePassed);
-            console.log(animationTime);
             if (timePassed >= animationTime) {
-                window.clearInterval(timer);
+                // window.clearInterval(timer);
+                this.clearAndDeleteCurrentCarTimer(id);
                 return;
             }
             currentPos += step;
             carImage.style.transform = `translateX(${currentPos}px)`;
         }, 20);
         this.switchEngineToDriveMode(id, timer);
+        this.timers.push({
+            timerId: `timerId${id}`,
+            timer
+        });
         // carImage.style.transform = `translateX(${trackLength - carLength}px)`;
-        console.log(`Start animation. Id car: ${id}. Animation time: ${animationTime}.
-        Track length ${trackLength}. Car image ${carImage}. Car length ${carLength}`);
+        // console.log(`Start animation. Id car: ${id}. Animation time: ${animationTime}.
+        // Track length ${trackLength}. Car image ${carImage}. Car length ${carLength}`);
     }
 
     startEngine = async (id: number, trackElem: HTMLElement, carImage: HTMLElement) => {
@@ -86,15 +101,21 @@ export class AsyncRaceApiService {
         this.startAnimation(id, animationTime, trackElem, carImage);
     }
 
-    stopEngine = async (id: number) => {
+    stopEngine = async (id: number, carImage: HTMLElement) => {
+        // const currentCarTimerIndex = this.findCurrentCarTimerIndex(id);
         const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=stopped`);
-        return await response.json();
+        const result = await response.json();
+        this.clearAndDeleteCurrentCarTimer(id);
+        carImage.style.transform = 'translateX(0px)';
+        // window.clearInterval(this.timers[currentCarTimerIndex].timer);
+        // this.timers.splice(currentCarTimerIndex, 1);
     }
 
     switchEngineToDriveMode = async (id: number, timer: number) => {
         const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=drive`);
         if (response.status === 500) {
-            window.clearInterval(timer);
+            // window.clearInterval(timer);
+            this.clearAndDeleteCurrentCarTimer(id);
             return;
         }
         return await response.json();

@@ -48,7 +48,8 @@ const CarContainer = ({id, name, color, selectCar, removeCar}:
       <div className='car-container__track-container d-flex border-bottom align-items-end'>
         <button className='btn btn-sm btn-outline-success mb-2'
                 onClick={() => asyncRaceApiService.startEngine(id, returnCarTrack()!, returnCarImage()!)}>Start</button>
-        <button className='btn btn-sm btn-outline-warning mx-2 mb-2'>Stop</button>
+        <button className='btn btn-sm btn-outline-warning mx-2 mb-2'
+                onClick={() => asyncRaceApiService.stopEngine(id, returnCarImage()!)}>Stop</button>
         <div ref={carTrack} className='car-container__track d-flex'>
           <svg ref={carImage} className='car' width="594" height="239" viewBox="0 0 594 239" fill="none"
                xmlns="http://www.w3.org/2000/svg">
