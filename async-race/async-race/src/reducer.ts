@@ -2,7 +2,11 @@ import ActionsInterface from "./interfaces/actions-interface";
 import StateInterface from "./interfaces/state-interface";
 
 const initialState: StateInterface = {
-  cars: []
+  cars: [],
+  nameCreateCar: '',
+  nameUpdateCar: '',
+  colorCreateCar: '#000000',
+  colorUpdateCar: '#000000'
 }
 
 //FIXME: fix any type
@@ -13,6 +17,31 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         ...state,
         cars: action.payload
       };
+    case 'GET_NAME_CREATE_CAR':
+      return {
+        ...state,
+        nameCreateCar: action.payload
+      }
+    case 'GET_NAME_UPDATE_CAR':
+      return {
+        ...state,
+        nameUpdateCar: action.payload
+      }
+    case 'GET_COLOR_CREATE_CAR':
+      return {
+        ...state,
+        colorCreateCar: action.payload
+      };
+    case 'GET_COLOR_UPDATE_CAR':
+      return {
+        ...state,
+        colorUpdateCar: action.payload
+      }
+    case 'CREATE_CAR':
+      return {
+        ...state,
+        cars: [...state.cars, action.payload]
+      }
 
     default:
       return state;

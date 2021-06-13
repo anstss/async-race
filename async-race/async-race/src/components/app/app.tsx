@@ -7,7 +7,7 @@ import Pagination from "../pagination/pagination";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
 
 const App = () => {
-  const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
+  // const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
   // console.log(asyncRaceApiService.getAllCars());
 
   return (

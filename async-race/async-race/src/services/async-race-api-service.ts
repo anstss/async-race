@@ -16,8 +16,8 @@ export class AsyncRaceApiService {
 
     createCar = async (carName: string, carColor: string) => {
         const data = {
-            carName,
-            carColor
+            name: carName,
+            color: carColor
         };
         const response = await fetch(this.apiBaseGarage, {
             method: 'POST',

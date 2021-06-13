@@ -2,8 +2,13 @@ import React from "react";
 import CarContainer from "../car-container/car-container";
 import {connect} from "react-redux";
 import StateInterface from "../../interfaces/state-interface";
+import PropsInterface from "../../interfaces/props-interface";
+import store from "../../store";
+import CarInterface from "../../interfaces/car-interface";
 
-const CarList = ({cars}: StateInterface) => {
+const CarList = () => {
+  const {cars} = store.getState();
+  console.log(cars)
   return (
     <ul className='list-unstyled'>
       {
