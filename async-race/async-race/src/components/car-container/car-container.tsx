@@ -1,15 +1,41 @@
 import "./car-container.scss";
 import racingFlag from "../../assets/racing-flag.svg";
-import React from "react";
+import React, {useRef} from "react";
 import CarInterface from "../../interfaces/car-interface";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
 import StateInterface from "../../interfaces/state-interface";
+import {useContext} from "react";
+import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
 
 //FIXME: fix any type
 const CarContainer = ({id, name, color, selectCar, removeCar}:
-                        {id: number, name: string, color: string, selectCar: any, removeCar: any}) => {
+                        {
+                          id: number, name: string, color: string, selectCar: any, removeCar: any
+                        }) => {
+
+  const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
+
+  const carTrack = useRef(null);
+  const returnCarTrack = () => {
+    return carTrack.current;
+  }
+  const carImage = useRef(null);
+  const returnCarImage = () => {
+    return carImage.current;
+  }
+
+  // const startCarEngine = (id: number) => {
+  //   asyncRaceApiService.startEngine(id)
+  //     .then((params) => {
+  //       const {velocity, distance} = params;
+  //       const animationTime = distance / velocity;
+  //       startAnimation(id, animationTime);
+  //       return asyncRaceApiService.switchEngineToDriveMode
+  //     })
+  // }
+
   return (
     <div>
       <div className='car-container__header d-flex align-items-center my-3'>
@@ -20,10 +46,11 @@ const CarContainer = ({id, name, color, selectCar, removeCar}:
         <div className='car-container__car-name mx-3'>{name}</div>
       </div>
       <div className='car-container__track-container d-flex border-bottom align-items-end'>
-        <button className='btn btn-sm btn-outline-success mb-2'>Start</button>
+        <button className='btn btn-sm btn-outline-success mb-2'
+                onClick={() => asyncRaceApiService.startEngine(id, returnCarTrack()!, returnCarImage()!)}>Start</button>
         <button className='btn btn-sm btn-outline-warning mx-2 mb-2'>Stop</button>
-        <div className='car-container__track d-flex'>
-          <svg className='car' width="594" height="239" viewBox="0 0 594 239" fill="none"
+        <div ref={carTrack} className='car-container__track d-flex'>
+          <svg ref={carImage} className='car' width="594" height="239" viewBox="0 0 594 239" fill="none"
                xmlns="http://www.w3.org/2000/svg">
             <path
               d="M79.1043 60.302C91.5233 52.56 104.447 45.668 117.796 39.666L148.32 70.19H454.85C493.73 70.19 531.927 80.335 565.685 99.627C576.641 105.876 583.394 117.524 583.394 130.132V188.847H59.3283L27.2913 175.993C16.7803 171.791 9.88831 161.606 9.88831 150.284V70.19L79.1043 60.302Z"

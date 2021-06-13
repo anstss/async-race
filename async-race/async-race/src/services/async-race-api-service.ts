@@ -55,10 +55,35 @@ export class AsyncRaceApiService {
     //     const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=${status}`);
     //     return await response.json();
     // }
+    startAnimation = (id: number, animationTime: number, trackElem: HTMLElement, carImage: HTMLElement) => {
+        const trackLength = trackElem.offsetWidth;
+        const carLength = carImage.getBoundingClientRect().width;
+        const startTime = Date.now();
+        const step = (trackLength - carLength) / animationTime * 20;
+        let currentPos = 0;
+        let timer = window.setInterval(() => {
+            let timePassed = Date.now() - startTime;
+            console.log(timePassed);
+            console.log(animationTime);
+            if (timePassed >= animationTime) {
+                window.clearInterval(timer);
+                return;
+            }
+            currentPos += step;
+            carImage.style.transform = `translateX(${currentPos}px)`;
+        }, 20);
+        this.switchEngineToDriveMode(id, timer);
+        // carImage.style.transform = `translateX(${trackLength - carLength}px)`;
+        console.log(`Start animation. Id car: ${id}. Animation time: ${animationTime}.
+        Track length ${trackLength}. Car image ${carImage}. Car length ${carLength}`);
+    }
 
-    startEngine = async (id: number) => {
+    startEngine = async (id: number, trackElem: HTMLElement, carImage: HTMLElement) => {
         const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=started`);
-        return await response.json();
+        const params = await response.json();
+        const {velocity, distance} = params;
+        const animationTime = distance / velocity;
+        this.startAnimation(id, animationTime, trackElem, carImage);
     }
 
     stopEngine = async (id: number) => {
@@ -66,10 +91,11 @@ export class AsyncRaceApiService {
         return await response.json();
     }
 
-    switchEngineToDriveMode = async (id: number) => {
+    switchEngineToDriveMode = async (id: number, timer: number) => {
         const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=drive`);
         if (response.status === 500) {
-            console.log("STOP CAR!");
+            window.clearInterval(timer);
+            return;
         }
         return await response.json();
     }
