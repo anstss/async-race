@@ -97,3 +97,10 @@ export const createHundredCars = (cars: CarInterface[]) => {
     payload: cars
   }
 }
+
+export const setAdditionalCarInfo = (id: number, carTrack: HTMLElement, carImage: HTMLElement) => {
+   return {
+     type: 'SET_ADDITIONAL_CAR_INFO',
+     payload: {id, carTrack, carImage}
+   }
+};

@@ -13,6 +13,7 @@ const asyncRaceApiService = new AsyncRaceApiService();
 const {getAllCarsAction} = bindActionCreators(actions, store.dispatch);
 
 asyncRaceApiService.getAllCars().then((cars) => {
+  // console.log(cars)
   getAllCarsAction(cars);
 });
 

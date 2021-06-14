@@ -1,7 +1,6 @@
 import "./car-container.scss";
 import racingFlag from "../../assets/racing-flag.svg";
-import React, {useRef} from "react";
-import CarInterface from "../../interfaces/car-interface";
+import React, {useEffect, useRef} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
@@ -10,9 +9,10 @@ import {useContext} from "react";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
 
 //FIXME: fix any type
-const CarContainer = ({id, name, color, selectCar, removeCar}:
+const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo}:
                         {
-                          id: number, name: string, color: string, selectCar: any, removeCar: any
+                          id: number, name: string, color: string, selectCar: any, removeCar: any,
+                          setAdditionalCarInfo: any
                         }) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -21,20 +21,20 @@ const CarContainer = ({id, name, color, selectCar, removeCar}:
   const returnCarTrack = () => {
     return carTrack.current;
   }
+
+
   const carImage = useRef(null);
   const returnCarImage = () => {
     return carImage.current;
   }
 
-  // const startCarEngine = (id: number) => {
-  //   asyncRaceApiService.startEngine(id)
-  //     .then((params) => {
-  //       const {velocity, distance} = params;
-  //       const animationTime = distance / velocity;
-  //       startAnimation(id, animationTime);
-  //       return asyncRaceApiService.switchEngineToDriveMode
-  //     })
-  // }
+  useEffect(() => {
+    const track = returnCarTrack();
+    const carImg = returnCarImage();
+    if (track && carImg) {
+      setAdditionalCarInfo(id, track, carImg);
+    }
+  }, []);
 
   return (
     <div>

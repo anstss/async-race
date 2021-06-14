@@ -1,4 +1,5 @@
 import TimerInterface from "../interfaces/timer-inteface";
+import CarInterface from "../interfaces/car-interface";
 
 export class AsyncRaceApiService {
     private apiBase = 'http://127.0.0.1:3000';
@@ -119,6 +120,11 @@ export class AsyncRaceApiService {
             return;
         }
         return await response.json();
+    }
+
+    startRace = (cars: CarInterface[]) => {
+        // const {id, carTrack, carImage}
+        cars.forEach((car) => this.startEngine(car.id, car.carTrack, car.carImage));
     }
 
     getAllWinners = async () => {

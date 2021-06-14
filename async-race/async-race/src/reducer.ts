@@ -88,6 +88,23 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         ...state,
         cars: action.payload
       }
+    //TODO: findCarIndex, updateCars
+    case 'SET_ADDITIONAL_CAR_INFO':
+      const {id: carID, carTrack, carImage} = action.payload;
+      const carInd = state.cars.findIndex((car) => car.id === carID);
+      const carWithAdditionalInfo = {
+        ...state.cars[carInd],
+        carTrack,
+        carImage
+      }
+      return {
+        ...state,
+        cars: [
+          ...state.cars.slice(0, carInd),
+          carWithAdditionalInfo,
+          ...state.cars.slice(carInd + 1)
+        ]
+      }
 
     default:
       return state;

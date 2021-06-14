@@ -11,7 +11,7 @@ import {generateRandCarName, generateRandColor} from "../../shared/utils";
 import CarInterface from "../../interfaces/car-interface";
 
 //FIXME: fix any type
-const CarSettings = ({
+const CarSettings = ({ cars,
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
                        createCar, nameUpdateCar, colorUpdateCar,
@@ -91,7 +91,8 @@ const CarSettings = ({
                 onClick={() => sendRequestUpdateCar()}>Update car</button>
       </div>
       <div className='d-flex justify-content-center'>
-        <button className='btn btn-success mx-3 btn-size-sm'>Race</button>
+        <button className='btn btn-success mx-3 btn-size-sm'
+                onClick={() => asyncRaceApiService.startRace(cars)}>Race</button>
         <button className='btn btn-primary btn-size-sm'>Reset</button>
         <button className='btn btn-info mx-3 btn-size-lg'
                 onClick={() => createOneHundredCars()}>Generate cars</button>
@@ -101,7 +102,9 @@ const CarSettings = ({
 }
 
 const mapStateToProps = (state: StateInterface) => {
-  return state;
+  return {
+    cars: state.cars
+  }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
