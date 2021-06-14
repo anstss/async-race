@@ -6,8 +6,8 @@ import PropsInterface from "../../interfaces/props-interface";
 import store from "../../store";
 import CarInterface from "../../interfaces/car-interface";
 
-const CarList = () => {
-  const {cars} = store.getState();
+const CarList = ({cars}: {cars: CarInterface[]}) => {
+  // const {cars} = store.getState();
   return (
     <ul className='list-unstyled'>
       {

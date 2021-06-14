@@ -1,6 +1,7 @@
 import CarInterface from "./car-interface";
 
 export default interface StateInterface {
+  view: string,
   cars: CarInterface[] | [],
   nameCreateCar: string,
   nameUpdateCar: string,

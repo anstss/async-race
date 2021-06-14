@@ -4,6 +4,13 @@ import store from "./store";
 
 const asyncRaceApiService = new AsyncRaceApiService();
 
+export const showView = (view: string) => {
+  return {
+    type: 'SHOW_VIEW',
+    payload: view
+  }
+}
+
 export const getAllCarsAction = (cars: CarInterface[]) => {
   return {
     type: 'GET_ALL_CARS',

@@ -2,6 +2,7 @@ import ActionsInterface from "./interfaces/actions-interface";
 import StateInterface from "./interfaces/state-interface";
 
 const initialState: StateInterface = {
+  view: 'garage',
   cars: [],
   nameCreateCar: '',
   nameUpdateCar: '',
@@ -13,6 +14,11 @@ const initialState: StateInterface = {
 //FIXME: fix any type
 const reducer = (state = initialState, action: ActionsInterface<any>) => {
   switch (action.type) {
+    case 'SHOW_VIEW':
+      return {
+        ...state,
+        view: action.payload
+      };
     case 'GET_ALL_CARS':
       return {
         ...state,
