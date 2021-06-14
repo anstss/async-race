@@ -77,6 +77,11 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
           ...state.cars.slice(index + 1)
         ]
       }
+    case 'CREATE_HUNDRED_CARS':
+      return {
+        ...state,
+        cars: action.payload
+      }
 
     default:
       return state;

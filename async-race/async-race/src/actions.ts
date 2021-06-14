@@ -83,7 +83,10 @@ export const removeCar = (id: number) => {
     payload: id
   }
 }
-//
-// export const startEngine = (id: number) => {
-//
-// }
+
+export const createHundredCars = (cars: CarInterface[]) => {
+  return {
+    type: 'CREATE_HUNDRED_CARS',
+    payload: cars
+  }
+}

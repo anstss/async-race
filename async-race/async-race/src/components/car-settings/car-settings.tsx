@@ -7,13 +7,15 @@ import * as actions from "../../actions";
 import store from "../../store";
 import {AsyncRaceApiService} from "../../services/async-race-api-service";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
+import {generateRandCarName, generateRandColor} from "../../shared/utils";
+import CarInterface from "../../interfaces/car-interface";
 
 //FIXME: fix any type
 const CarSettings = ({
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
                        createCar, nameUpdateCar, colorUpdateCar,
-                       updateCar
+                       updateCar, createHundredCars
                      }: any) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -54,6 +56,17 @@ const CarSettings = ({
     updateCar(car);
   }
 
+  const createOneHundredCars = () => {
+    for (let i = 0; i < 100; i++) {
+      const carName = generateRandCarName();
+      const carColor = generateRandColor();
+      asyncRaceApiService.createCar(carName, carColor);
+    }
+    // let allCars: CarInterface[] = [];
+    asyncRaceApiService.getAllCars()
+      .then((cars) => createHundredCars(cars));
+  }
+
   //TODO: Car setting!!!!
   return (
     <div className='mt-4'>
@@ -80,7 +93,8 @@ const CarSettings = ({
       <div className='d-flex justify-content-center'>
         <button className='btn btn-success mx-3 btn-size-sm'>Race</button>
         <button className='btn btn-primary btn-size-sm'>Reset</button>
-        <button className='btn btn-info mx-3 btn-size-lg'>Generate cars</button>
+        <button className='btn btn-info mx-3 btn-size-lg'
+                onClick={() => createOneHundredCars()}>Generate cars</button>
       </div>
     </div>
   )
