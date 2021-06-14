@@ -127,6 +127,10 @@ export class AsyncRaceApiService {
         cars.forEach((car) => this.startEngine(car.id, car.carTrack, car.carImage));
     }
 
+    stopRace = (cars: CarInterface[]) => {
+        cars.forEach((car) => this.stopEngine(car.id, car.carImage));
+    }
+
     getAllWinners = async () => {
         const response = await fetch(this.apiBaseWinners);
         return await response.json();
