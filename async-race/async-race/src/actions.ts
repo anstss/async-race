@@ -104,3 +104,23 @@ export const setAdditionalCarInfo = (id: number, carTrack: HTMLElement, carImage
      payload: {id, carTrack, carImage}
    }
 };
+
+export const updateCarWins = (id: number, wins: number, bestTime: number) => {
+  return {
+    type: 'UPDATE_CAR_WINS',
+    payload: {id, wins, bestTime}
+  }
+}
+
+export const showAndSetCurrentWinner = (id: number, time: number) => {
+  return {
+    type: 'SHOW_AND_SET_CURRENT_WINNER',
+    payload: {id, time}
+  }
+}
+
+export const hideAndClearCurrentWinner = () => {
+  return {
+    type: 'HIDE_AND_CLEAR_CURRENT_WINNER'
+  }
+}

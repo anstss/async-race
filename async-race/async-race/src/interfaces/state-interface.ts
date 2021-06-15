@@ -1,4 +1,5 @@
 import CarInterface from "./car-interface";
+import CurrentWinnerInterface from "./current-winner-interface";
 
 export default interface StateInterface {
   view: string,
@@ -7,5 +8,6 @@ export default interface StateInterface {
   nameUpdateCar: string,
   colorCreateCar: string,
   colorUpdateCar: string,
-  selectedCar: number | null
+  selectedCar: number | null,
+  currentWinner: CurrentWinnerInterface | null
 }

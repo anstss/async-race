@@ -104,7 +104,9 @@ const CarSettings = ({ cars,
 
 const mapStateToProps = (state: StateInterface) => {
   return {
-    cars: state.cars
+    cars: state.cars,
+    nameUpdateCar: state.nameUpdateCar,
+    colorUpdateCar: state.colorUpdateCar
   }
 }
 

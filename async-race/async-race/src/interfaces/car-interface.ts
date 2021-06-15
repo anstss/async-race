@@ -3,5 +3,7 @@ export default interface CarInterface {
   color: string,
   id: number,
   carTrack: HTMLElement,
-  carImage: HTMLElement
+  carImage: HTMLElement,
+  wins: number | undefined,
+  bestTime: number | undefined
 }

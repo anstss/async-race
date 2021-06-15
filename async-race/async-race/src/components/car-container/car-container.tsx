@@ -22,7 +22,6 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
     return carTrack.current;
   }
 
-
   const carImage = useRef(null);
   const returnCarImage = () => {
     return carImage.current;

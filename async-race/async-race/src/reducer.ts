@@ -8,7 +8,8 @@ const initialState: StateInterface = {
   nameUpdateCar: '',
   colorCreateCar: '#000000',
   colorUpdateCar: '#000000',
-  selectedCar: null
+  selectedCar: null,
+  currentWinner: null
 }
 
 //FIXME: fix any type
@@ -104,6 +105,37 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
           carWithAdditionalInfo,
           ...state.cars.slice(carInd + 1)
         ]
+      }
+    case 'UPDATE_CAR_WINS':
+      const {id: winnerId, wins, bestTime} = action.payload;
+      const winnerInd = state.cars.findIndex((car) => car.id === winnerId);
+      const winner = {
+        ...state.cars[winnerInd],
+        wins,
+        bestTime
+      }
+      return {
+        ...state,
+        cars: [
+          ...state.cars.slice(0, winnerInd),
+          winner,
+          ...state.cars.slice(winnerInd + 1)
+        ]
+      }
+    case 'SHOW_AND_SET_CURRENT_WINNER':
+      const {id: winId, time} = action.payload;
+      const winnerIndex = state.cars.findIndex((car) => car.id === winId);
+      return {
+        ...state,
+        currentWinner: {
+          ...state.cars[winnerIndex],
+          winTime: time
+        }
+      }
+    case 'HIDE_AND_CLEAR_CURRENT_WINNER':
+      return {
+        ...state,
+        currentWinner: null
       }
 
     default:

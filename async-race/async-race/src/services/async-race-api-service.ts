@@ -1,5 +1,7 @@
 import TimerInterface from "../interfaces/timer-inteface";
 import CarInterface from "../interfaces/car-interface";
+import store from "../store";
+import {showAndSetCurrentWinner, updateCarWins} from "../actions";
 
 export class AsyncRaceApiService {
     private apiBase = 'http://127.0.0.1:3000';
@@ -54,11 +56,7 @@ export class AsyncRaceApiService {
         return await response.json();
     }
 
-    // switchEngine = async (id: number, status: string) => {
-    //     const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=${status}`);
-    //     return await response.json();
-    // }
-    timers: TimerInterface[] = [];
+    private timers: TimerInterface[] = [];
 
     private clearAndDeleteCurrentCarTimer = (id: number) => {
         const currentCarTimerIndex = this.timers.findIndex((timer) => timer.timerId === `timerId${id}`);
@@ -67,6 +65,10 @@ export class AsyncRaceApiService {
             this.timers.splice(currentCarTimerIndex, 1);
         }
     }
+
+    private raceMode = false;
+    private winnerId: number | null = null;
+    private resultsSwitchEngine: Promise<any>[] = [];
 
     private startAnimation = (id: number, animationTime: number, trackElem: HTMLElement, carImage: HTMLElement) => {
         const trackLength = trackElem.offsetWidth;
@@ -84,11 +86,28 @@ export class AsyncRaceApiService {
             currentPos += step;
             carImage.style.transform = `translateX(${currentPos}px)`;
         }, 20);
-        this.switchEngineToDriveMode(id, timer);
         this.timers.push({
             timerId: `timerId${id}`,
             timer
         });
+        if (!this.raceMode) {
+            this.switchEngineToDriveMode(id, timer);
+            return;
+        }
+        // if (this.hasWinner) return;
+        const promise = this.switchEngineToDriveMode(id, timer);
+        this.resultsSwitchEngine.push(promise);
+        promise
+          .then((result) => {
+              if (result !== undefined) {
+                  if (this.winnerId) return;
+                  this.winnerId = id;
+                  console.log('winner' + this.winnerId)
+                  this.setNewWinner(id, animationTime);
+              }
+              return;
+          })
+
         // carImage.style.transform = `translateX(${trackLength - carLength}px)`;
         // console.log(`Start animation. Id car: ${id}. Animation time: ${animationTime}.
         // Track length ${trackLength}. Car image ${carImage}. Car length ${carLength}`);
@@ -124,21 +143,58 @@ export class AsyncRaceApiService {
 
     startRace = (cars: CarInterface[]) => {
         // const {id, carTrack, carImage}
+        this.raceMode = true;
         cars.forEach((car) => this.startEngine(car.id, car.carTrack, car.carImage));
     }
 
     stopRace = (cars: CarInterface[]) => {
-        cars.forEach((car) => this.stopEngine(car.id, car.carImage));
+        this.raceMode = false;
+        let stopAllCars: any = [];
+        cars.forEach((car) => {
+            stopAllCars.push(this.stopEngine(car.id, car.carImage))
+        });
+        console.log(this.resultsSwitchEngine.length)
+        Promise.allSettled(stopAllCars).then(() => {
+            Promise.allSettled(this.resultsSwitchEngine).then(() => {
+                console.log('clear winner')
+                this.resultsSwitchEngine.length = 0;
+                this.winnerId = null;
+                console.log('ALL STOPPED')
+                console.log('HERE UNBLOCK RACE')
+            })
+        });
     }
 
     getAllWinners = async () => {
         const response = await fetch(this.apiBaseWinners);
         return await response.json();
     }
+    // getWinner = async (id: number) => {
+    //     const response = await fetch(`this.apiBaseWinners/${id}`);
+    //     return await response.json();
+    // }
 
-    getWinner = async (id: number) => {
-        const response = await fetch(`this.apiBaseWinners/${id}`);
-        return await response.json();
+    setNewWinner = async (id: number, time: number) => {
+        console.log(id)
+        const response = await fetch(`${this.apiBaseWinners}/${id}`);
+        console.log(response.status)
+        let winnerId = id;
+        let bestTime = time;
+        let wins = 1;
+        if (response.status === 404) {
+            console.log('need new winner');
+            this.createWinner(id, wins, bestTime);
+        }
+        if (response.status === 200) {
+            const winner = await response.json();
+            bestTime = time < winner.time ? time : winner.time;
+            wins = winner.wins + 1;
+            this.updateWinner(id, wins, bestTime);
+            console.log(winner);
+        }
+        const winTime = Math.floor(time) / 1000;
+        store.dispatch(updateCarWins(id, wins, bestTime));
+        store.dispatch(showAndSetCurrentWinner(id, winTime));
     }
 
     createWinner = async (id: number, wins: number, time: number) => {
