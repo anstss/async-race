@@ -50,12 +50,6 @@ export const getColorUpdateCar = (target: HTMLInputElement) => {
   }
 }
 
-// export const sendRequestCreateCar = async () => {
-//   const {nameCreateCar, colorCreateCar} = store.getState();
-//   const car = await asyncRaceApiService.createCar(nameCreateCar, colorCreateCar);
-//   createCar(car);
-// }
-
 export const createCar = (car: CarInterface) => {
   return {
     type: 'CREATE_CAR',
@@ -75,8 +69,6 @@ export const selectCar = (id: number) => {
 
 export const updateCar = () => {
   const currentCarId = store.getState().selectedCar;
-  // const cars = store.getState().cars;
-  // const currentCar = cars.find(car => car.id === currentCarId);
   return {
     type: 'UPDATE_CAR',
     payload: currentCarId
@@ -122,5 +114,13 @@ export const showAndSetCurrentWinner = (id: number, time: number) => {
 export const hideAndClearCurrentWinner = () => {
   return {
     type: 'HIDE_AND_CLEAR_CURRENT_WINNER'
+  }
+}
+
+//FIXME: fix any type
+export const updateAllWinners = (transformedWinners: any) => {
+  return {
+    type: 'UPDATE_ALL_WINNERS',
+    payload: transformedWinners
   }
 }

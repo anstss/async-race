@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import App from "./components/app/app";
 import {AsyncRaceApiService} from "./services/async-race-api-service";
@@ -13,9 +13,10 @@ const asyncRaceApiService = new AsyncRaceApiService();
 const {getAllCarsAction} = bindActionCreators(actions, store.dispatch);
 
 asyncRaceApiService.getAllCars().then((cars) => {
-  // console.log(cars)
   getAllCarsAction(cars);
 });
+
+asyncRaceApiService.updateWinners();
 
 ReactDOM.render(
   <React.StrictMode>

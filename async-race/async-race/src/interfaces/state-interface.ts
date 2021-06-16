@@ -10,4 +10,6 @@ export default interface StateInterface {
   colorUpdateCar: string,
   selectedCar: number | null,
   currentWinner: CurrentWinnerInterface | null,
+  //FIXME: fix any type
+  winners: any
 }

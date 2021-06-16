@@ -1,7 +1,8 @@
 import TimerInterface from "../interfaces/timer-inteface";
 import CarInterface from "../interfaces/car-interface";
 import store from "../store";
-import {showAndSetCurrentWinner, updateCarWins} from "../actions";
+import {showAndSetCurrentWinner, updateAllWinners, updateCarWins} from "../actions";
+import {Dispatch} from "redux";
 
 export class AsyncRaceApiService {
     private apiBase = 'http://127.0.0.1:3000';
@@ -233,5 +234,26 @@ export class AsyncRaceApiService {
             body: JSON.stringify(data)
         });
         return await response.json();
+    }
+
+   //Middleware thunk ?
+   updateWinners = () => {
+        let winnersCars: {name: string, wins: number, time: number, id: number, color: string}[] = [];
+        let transformedWinners: any[] = [];
+       return this.getAllWinners().then((cars: any) => {
+           winnersCars = [...cars];
+           const carsWithAdditionalInfo = store.getState().cars;
+           transformedWinners = winnersCars.map((car: {wins: number, time: number, id: number}) => {
+               const carInfo = carsWithAdditionalInfo.find((elem: any) => elem.id === car.id);
+               return {
+                   wins: car.wins,
+                   time: car.time,
+                   id: car.id,
+                   color: carInfo!.color,
+                   name: carInfo!.name
+               }
+           })
+           store.dispatch(updateAllWinners(transformedWinners));
+       });
     }
 }

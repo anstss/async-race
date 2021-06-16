@@ -9,7 +9,8 @@ const initialState: StateInterface = {
   colorCreateCar: '#000000',
   colorUpdateCar: '#000000',
   selectedCar: null,
-  currentWinner: null
+  currentWinner: null,
+  winners: null
 }
 
 //FIXME: fix any type
@@ -136,6 +137,11 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
       return {
         ...state,
         currentWinner: null
+      }
+    case 'UPDATE_ALL_WINNERS':
+      return {
+        ...state,
+        winners: action.payload
       }
 
     default:
