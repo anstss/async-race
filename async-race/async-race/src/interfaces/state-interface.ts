@@ -9,5 +9,5 @@ export default interface StateInterface {
   colorCreateCar: string,
   colorUpdateCar: string,
   selectedCar: number | null,
-  currentWinner: CurrentWinnerInterface | null
+  currentWinner: CurrentWinnerInterface | null,
 }
