@@ -22,9 +22,10 @@ const Winners = ({winners}: {winners: any}) => {
           //FIXME: fix any type
           winners.map((car: any) => {
               const {id, color, name, wins, time} = car;
+              const num = winners.indexOf(car) + 1;
               return (
                 <li key={id}>
-                  <Winner color={color} name={name} wins={wins} bestTime={time}/>
+                  <Winner num={num} color={color} name={name} wins={wins} bestTime={time}/>
                 </li>
               )
             })

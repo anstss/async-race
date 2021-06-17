@@ -1,14 +1,14 @@
 import React from "react";
 
 const Winner = ({
-                  color, name, wins, bestTime
+                  num, color, name, wins, bestTime
                 }: {
-                  color: string, name: string,
+                  num: number, color: string, name: string,
                   wins: number, bestTime: number
                 }) => {
   return (
     <div className='d-flex my-2 px-2'>
-      <div className='col'>1</div>
+      <div className='col'>{num}</div>
       <div className='col'>
         <svg className='car car-sm' width="594" height="239" viewBox="0 0 594 239" fill="none"
              xmlns="http://www.w3.org/2000/svg">
