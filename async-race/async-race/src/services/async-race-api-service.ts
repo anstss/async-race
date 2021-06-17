@@ -176,11 +176,9 @@ export class AsyncRaceApiService {
     // }
 
     setNewWinner = async (id: number, time: number) => {
-        console.log(id)
         const response = await fetch(`${this.apiBaseWinners}/${id}`);
-        console.log(response.status)
-        let winnerId = id;
-        let bestTime = time;
+        const timeInSeconds = Math.floor(time) / 1000;
+        let bestTime = timeInSeconds;
         let wins = 1;
         if (response.status === 404) {
             console.log('need new winner');
@@ -188,14 +186,13 @@ export class AsyncRaceApiService {
         }
         if (response.status === 200) {
             const winner = await response.json();
-            bestTime = time < winner.time ? time : winner.time;
+            bestTime = timeInSeconds < winner.time ? timeInSeconds : winner.time;
             wins = winner.wins + 1;
             this.updateWinner(id, wins, bestTime);
             console.log(winner);
         }
-        const winTime = Math.floor(time) / 1000;
         store.dispatch(updateCarWins(id, wins, bestTime));
-        store.dispatch(showAndSetCurrentWinner(id, winTime));
+        store.dispatch(showAndSetCurrentWinner(id, timeInSeconds));
     }
 
     createWinner = async (id: number, wins: number, time: number) => {
@@ -256,4 +253,5 @@ export class AsyncRaceApiService {
            store.dispatch(updateAllWinners(transformedWinners));
        });
     }
+
 }

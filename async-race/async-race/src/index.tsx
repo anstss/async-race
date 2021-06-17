@@ -16,7 +16,7 @@ asyncRaceApiService.getAllCars().then((cars) => {
   getAllCarsAction(cars);
 });
 
-asyncRaceApiService.updateWinners();
+asyncRaceApiService.updateWinners()
 
 ReactDOM.render(
   <React.StrictMode>
