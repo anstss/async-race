@@ -3,8 +3,10 @@ import React from "react";
 import Winner from "../../winner/winner";
 import StateInterface from "../../../interfaces/state-interface";
 import {connect} from "react-redux";
+import WinnersPagination from "../../pagination/winners-pagination";
 
-const Winners = ({winners}: {winners: any}) => {
+//FIXME: fix any type
+const Winners = ({winners, currentWinners, currentWinnersPage}: {winners: any, currentWinners: any, currentWinnersPage: number}) => {
 
   return (
     <div className='mb-5'>
@@ -21,10 +23,12 @@ const Winners = ({winners}: {winners: any}) => {
         </li>
         {
           //FIXME: fix any type
-          winners.map((car: any) => {
-              const {id, color, name, wins, time} = car;
-              const num = winners.indexOf(car) + 1;
-              return (
+          currentWinners.map((car: any) => {
+            const winnersWithInfo = winners.find((elem: any) => elem.id === car.id);
+            const {id, color, name, wins, time} = winnersWithInfo;
+            //TODO: refactor
+            const num = currentWinnersPage === 1 ? currentWinners.indexOf(car) + 1 : (currentWinners.indexOf(car) + 1) + ((currentWinnersPage - 1) * 10);
+            return (
                 <li key={id}>
                   <Winner num={num} color={color} name={name} wins={wins} bestTime={time}/>
                 </li>
@@ -32,13 +36,16 @@ const Winners = ({winners}: {winners: any}) => {
             })
         }
       </ul>
+      <WinnersPagination/>
     </div>
   )
 }
 
 const mapStateToProps = (state: StateInterface) => {
   return {
-    winners: state.winners
+    winners: state.winners,
+    currentWinners: state.currentWinners,
+    currentWinnersPage: state.currentWinnersPage
   }
 }
 

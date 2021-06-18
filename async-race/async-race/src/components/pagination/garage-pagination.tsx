@@ -6,7 +6,7 @@ import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
 
 //FIXME: fix any type
-const CarPagination = ({
+const GaragePagination = ({
                       currentPage,
                       pageAmount,
                       setCurrentCars
@@ -49,4 +49,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CarPagination);
+export default connect(mapStateToProps, mapDispatchToProps)(GaragePagination);

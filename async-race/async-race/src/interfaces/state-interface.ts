@@ -16,5 +16,11 @@ export default interface StateInterface {
   pageLimit: number,
   carAmount: number,
   pageAmount: number,
-  currentCars: CarInterface[] | []
+  currentCars: CarInterface[] | [],
+  //FIXME: fix any type
+  currentWinners: any,
+  currentWinnersPage: number,
+  winnersPageAmount: number,
+  sortBy: string,
+  order: string
 }

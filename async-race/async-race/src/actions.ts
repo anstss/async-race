@@ -143,6 +143,24 @@ export const setCurrentCars = (cars: CarInterface[]) => {
   }
 }
 
+export const setWinnersAndWinnersPageAmount = (winnersAmount: number, winnersPageAmount: number, pageNumber: number) => {
+  return {
+    type: 'SET_WINNERS_AND_WINNERS_PAGE_AMOUNT',
+    payload: {
+      winnersAmount,
+      winnersPageAmount,
+      currentWinnersPage: pageNumber
+    }
+  }
+}
+
+//FIXME: fix any type
+export const setCurrentWinners = (winners: any) => {
+  return {
+    type: 'SET_CURRENT_WINNERS',
+    payload: winners
+  }
+}
 // export const setNextPage = () => {
 //   return {
 //     type: 'SET_NEXT_PAGE'

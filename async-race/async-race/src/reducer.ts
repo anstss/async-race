@@ -15,7 +15,12 @@ const initialState: StateInterface = {
   pageLimit: 7,
   carAmount: 0,
   pageAmount: 1,
-  currentCars: []
+  currentCars: [],
+  currentWinners: [],
+  currentWinnersPage: 1,
+  winnersPageAmount: 1,
+  sortBy: 'wins',
+  order: 'ASC'
 }
 
 //FIXME: fix any type
@@ -148,6 +153,7 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         ...state,
         winners: action.payload
       }
+    //  TODO: rename
     case 'SET_CAR_AND_PAGE_AMOUNT':
       const {carAmount, pageAmount, pageNumber} = action.payload;
       return {
@@ -161,6 +167,21 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
       return {
         ...state,
         currentCars: action.payload
+      }
+    //  TODO: rename
+    case 'SET_WINNERS_AND_WINNERS_PAGE_AMOUNT':
+      const {winnersAmount, winnersPageAmount, currentWinnersPage} = action.payload;
+      return {
+        ...state,
+        winnersAmount,
+        winnersPageAmount,
+        currentWinnersPage
+      }
+
+    case 'SET_CURRENT_WINNERS':
+      return {
+        ...state,
+        currentWinners: action.payload
       }
     // case 'SET_NEXT_PAGE' :
     //   return {

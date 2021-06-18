@@ -1,7 +1,7 @@
 import TimerInterface from "../interfaces/timer-inteface";
 import CarInterface from "../interfaces/car-interface";
 import store from "../store";
-import {showAndSetCurrentWinner, updateAllWinners, updateCarWins, setCarAndPageAmount} from "../actions";
+import {showAndSetCurrentWinner, updateAllWinners, updateCarWins, setCarAndPageAmount, setWinnersAndWinnersPageAmount} from "../actions";
 import {Dispatch} from "redux";
 
 export class AsyncRaceApiService {
@@ -151,18 +151,32 @@ export class AsyncRaceApiService {
         }
         return await response.json();
     }
-
+    //TODO: REFACTOR - Transformed cars!!!
     startRace = (cars: CarInterface[]) => {
         // const {id, carTrack, carImage}
+        const carsWithAdditionalInfo = store.getState().cars;
+        const transformedCars = cars.map((car) => {
+            const carInfo = carsWithAdditionalInfo.find((elem) => elem.id === car.id);
+            return {
+                ...carInfo
+            }
+        });
         this.raceMode = true;
-        cars.forEach((car) => this.startEngine(car.id, car.carTrack, car.carImage));
+        transformedCars.forEach((car) => this.startEngine(car.id!, car.carTrack!, car.carImage!));
     }
 
     stopRace = (cars: CarInterface[]) => {
         this.raceMode = false;
         let stopAllCars: any = [];
-        cars.forEach((car) => {
-            stopAllCars.push(this.stopEngine(car.id, car.carImage))
+        const carsWithAdditionalInfo = store.getState().cars;
+        const transformedCars = cars.map((car) => {
+            const carInfo = carsWithAdditionalInfo.find((elem) => elem.id === car.id);
+            return {
+                ...carInfo
+            }
+        });
+        transformedCars.forEach((car) => {
+            stopAllCars.push(this.stopEngine(car.id!, car.carImage!))
         });
         console.log(this.resultsSwitchEngine.length)
         Promise.allSettled(stopAllCars).then(() => {
@@ -264,7 +278,22 @@ export class AsyncRaceApiService {
        });
     }
 
-   // setNextPage = () => {
-   //
-   // }
+   // TODO: default limit to const
+   getCurrentWinners = async (pageNumber: number) => {
+       const sortBy = store.getState().sortBy;
+       const order = store.getState().order;
+       const response = await fetch(`${this.apiBaseWinners}?_page=${pageNumber}&_limit=10&_sort=${sortBy}&_order=${order}`);
+       const winnersAmount = Number(response.headers.get("X-Total-Count"));
+       const winnersPageAmount = Math.ceil(winnersAmount / 10);
+       store.dispatch(setWinnersAndWinnersPageAmount(winnersAmount, winnersPageAmount, pageNumber));
+       return await response.json();
+   }
+    // getCurrentCars = async (pageNumber: number) => {
+    //     const response = await fetch(`${this.apiBaseGarage}?_page=${pageNumber}&_limit=7`);
+    //     const carsAmount = Number(response.headers.get("X-Total-Count"));
+    //     const pageAmount = Math.ceil(carsAmount / 7);
+    //     console.log(pageNumber)
+    //     store.dispatch(setCarAndPageAmount(carsAmount, pageAmount, pageNumber));
+    //     return await response.json();
+    // }
 }

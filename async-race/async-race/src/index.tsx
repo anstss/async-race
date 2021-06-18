@@ -10,12 +10,19 @@ import {bindActionCreators} from "redux";
 
 const asyncRaceApiService = new AsyncRaceApiService();
 
-const {getAllCarsAction, setCurrentCars} = bindActionCreators(actions, store.dispatch);
+const {getAllCarsAction, setCurrentCars, setCurrentWinners} = bindActionCreators(actions, store.dispatch);
 
 asyncRaceApiService.getAllCars().then((cars) => getAllCarsAction(cars));
 asyncRaceApiService.getCurrentCars(1).then((cars) => setCurrentCars(cars));
 
 asyncRaceApiService.updateWinners()
+  .then(() => {
+    asyncRaceApiService.getCurrentWinners(1)
+      .then((winners) => {
+        setCurrentWinners(winners)
+        console.log(store.getState().currentWinners)
+      })
+  });
 
 ReactDOM.render(
   <React.StrictMode>

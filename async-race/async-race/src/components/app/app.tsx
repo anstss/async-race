@@ -3,7 +3,7 @@ import React from 'react';
 import Nav from "../nav/nav";
 import Garage from "../pages/garage/garage";
 import Winners from "../pages/winners/winners";
-import Pagination from "../pagination/car-pagination";
+import Pagination from "../pagination/garage-pagination";
 import StateInterface from "../../interfaces/state-interface";
 import {connect} from "react-redux";
 
