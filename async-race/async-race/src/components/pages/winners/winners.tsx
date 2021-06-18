@@ -10,8 +10,8 @@ const Winners = ({winners, currentWinners, currentWinnersPage}: {winners: any, c
 
   return (
     <div className='mb-5'>
-      <h2 className='page__title'>Winners (7)</h2>
-      <div className='page__pages'>Page №5</div>
+      <h2 className='page__title'>Winners ({winners.length})</h2>
+      <div className='page__pages'>Page №{currentWinnersPage}</div>
       <ul className='mt-2 px-0 list-unstyled'>
         <li className='navbar navbar-expand-lg navbar-dark bg-primary px-2'>
           <div className='navbar-brand col'>№</div>

@@ -19,8 +19,7 @@ asyncRaceApiService.updateWinners()
   .then(() => {
     asyncRaceApiService.getCurrentWinners(1)
       .then((winners) => {
-        setCurrentWinners(winners)
-        console.log(store.getState().currentWinners)
+        setCurrentWinners(winners);
       })
   });
 

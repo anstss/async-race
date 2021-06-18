@@ -11,7 +11,7 @@ import {generateRandCarName, generateRandColor} from "../../shared/utils";
 import CarInterface from "../../interfaces/car-interface";
 
 //FIXME: fix any type
-const CarSettings = ({ cars, currentCars,
+const CarSettings = ({ cars, currentCars, currentPage,
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
                        createCar, nameUpdateCar, colorUpdateCar,
@@ -48,12 +48,14 @@ const CarSettings = ({ cars, currentCars,
     const {nameCreateCar, colorCreateCar} = store.getState();
     const car = await asyncRaceApiService.createCar(nameCreateCar, colorCreateCar);
     createCar(car);
+    asyncRaceApiService.updateCarList(currentPage);
   }
 
   const sendRequestUpdateCar = async () => {
     const {selectedCar, nameUpdateCar, colorUpdateCar} = store.getState();
     const car = await asyncRaceApiService.updateCar(selectedCar!, nameUpdateCar, colorUpdateCar);
     updateCar(car);
+    asyncRaceApiService.updateCarList(currentPage);
   }
 
   const createOneHundredCars = () => {
@@ -64,7 +66,10 @@ const CarSettings = ({ cars, currentCars,
     }
     // let allCars: CarInterface[] = [];
     asyncRaceApiService.getAllCars()
-      .then((cars) => createHundredCars(cars));
+      .then((cars) => {
+        createHundredCars(cars);
+        asyncRaceApiService.updateCarList(currentPage);
+      });
   }
 
   //TODO: Car setting!!!!

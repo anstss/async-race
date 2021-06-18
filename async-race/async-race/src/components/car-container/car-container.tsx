@@ -1,18 +1,31 @@
 import "./car-container.scss";
 import racingFlag from "../../assets/racing-flag.svg";
-import React, {useEffect, useRef} from "react";
+import React, {Ref, useEffect, useRef} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
 import StateInterface from "../../interfaces/state-interface";
 import {useContext} from "react";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
+import store from "../../store";
+
+// export const handlerUseRef = (ref: any) => {
+//   return ref.current;
+// }
+
+// export const addAdditionalInfo = (id: number, getTrack: any, getImage: any, action: any) => {
+//   const track = getTrack();
+//   const carImg = getImage();
+//   action(id, track, carImg);
+// }
 
 //FIXME: fix any type
-const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo}:
+const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo, currentPage, carAmount,
+                        getAllCarsAction, setCurrentCars, cars, currentCars}:
                         {
                           id: number, name: string, color: string, selectCar: any, removeCar: any,
-                          setAdditionalCarInfo: any
+                          setAdditionalCarInfo: any, currentPage: number, carAmount: number, getAllCarsAction: any,
+                          setCurrentCars: any, cars: any, currentCars: any
                         }) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -27,21 +40,30 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
     return carImage.current;
   }
 
+  // addAdditionalInfo(id, returnCarTrack, returnCarImage, setAdditionalCarInfo);
+
   useEffect(() => {
+    console.log('woork')
     const track = returnCarTrack();
     const carImg = returnCarImage();
     if (track && carImg) {
       setAdditionalCarInfo(id, track, carImg);
     }
-  }, []);
+  }, [carAmount, currentCars]);
 
+  //TODO: move it to async-service or actions (mb need thunk)?
   return (
     <div>
       <div className='car-container__header d-flex align-items-center my-3'>
         <button className='btn btn-primary'
                 onClick={() => selectCar(id)}>Select</button>
         <button className='btn btn-danger mx-2'
-                onClick={() => removeCar(id)}>Remove</button>
+                onClick={() => {
+                  removeCar(id);
+                  asyncRaceApiService.deleteCar(id)
+                    .then(() => asyncRaceApiService.updateCarList(currentPage));
+                }
+                }>Remove</button>
         <div className='car-container__car-name mx-3'>{name}</div>
       </div>
       <div className='car-container__track-container d-flex border-bottom align-items-end'>
@@ -89,7 +111,12 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
 }
 
 const mapStateToProps = (state: StateInterface) => {
-  return state;
+  return {
+    currentPage: state.currentPage,
+    carAmount: state.carAmount,
+    cars: state.cars,
+    currentCars: state.currentCars
+  };
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {

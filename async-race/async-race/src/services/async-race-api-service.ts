@@ -1,7 +1,14 @@
 import TimerInterface from "../interfaces/timer-inteface";
 import CarInterface from "../interfaces/car-interface";
 import store from "../store";
-import {showAndSetCurrentWinner, updateAllWinners, updateCarWins, setCarAndPageAmount, setWinnersAndWinnersPageAmount} from "../actions";
+import {
+    showAndSetCurrentWinner,
+    updateAllWinners,
+    updateCarWins,
+    setCarAndPageAmount,
+    setWinnersAndWinnersPageAmount,
+    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo
+} from "../actions";
 import {Dispatch} from "redux";
 
 export class AsyncRaceApiService {
@@ -20,7 +27,6 @@ export class AsyncRaceApiService {
         const response = await fetch(`${this.apiBaseGarage}?_page=${pageNumber}&_limit=7`);
         const carsAmount = Number(response.headers.get("X-Total-Count"));
         const pageAmount = Math.ceil(carsAmount / 7);
-        console.log(pageNumber)
         store.dispatch(setCarAndPageAmount(carsAmount, pageAmount, pageNumber));
         return await response.json();
     }
@@ -50,6 +56,8 @@ export class AsyncRaceApiService {
             method: 'DELETE'
         });
         return await response.json();
+        // await this.getAllCars().then((cars) => store.dispatch(getAllCarsAction(cars)));
+        // await this.getCurrentCars(store.getState().currentPage).then((cars) => setCurrentCars(cars));
     }
 
     updateCar = async (id: number, name: string, color: string) => {
@@ -82,6 +90,7 @@ export class AsyncRaceApiService {
     private resultsSwitchEngine: Promise<any>[] = [];
 
     private startAnimation = (id: number, animationTime: number, trackElem: HTMLElement, carImage: HTMLElement) => {
+        console.log(trackElem)
         const trackLength = trackElem.offsetWidth;
         const carLength = carImage.getBoundingClientRect().width;
         const startTime = Date.now();
@@ -129,6 +138,7 @@ export class AsyncRaceApiService {
         const params = await response.json();
         const {velocity, distance} = params;
         const animationTime = distance / velocity;
+        console.log(trackElem)
         this.startAnimation(id, animationTime, trackElem, carImage);
     }
 
@@ -152,15 +162,16 @@ export class AsyncRaceApiService {
         return await response.json();
     }
     //TODO: REFACTOR - Transformed cars!!!
-    startRace = (cars: CarInterface[]) => {
-        // const {id, carTrack, carImage}
+    startRace = async (cars: CarInterface[]) => {
         const carsWithAdditionalInfo = store.getState().cars;
+        console.log(carsWithAdditionalInfo)
         const transformedCars = cars.map((car) => {
             const carInfo = carsWithAdditionalInfo.find((elem) => elem.id === car.id);
             return {
                 ...carInfo
             }
         });
+        console.log(transformedCars)
         this.raceMode = true;
         transformedCars.forEach((car) => this.startEngine(car.id!, car.carTrack!, car.carImage!));
     }
@@ -275,6 +286,7 @@ export class AsyncRaceApiService {
                }
            })
            store.dispatch(updateAllWinners(transformedWinners));
+           store.dispatch(setCurrentWinners(transformedWinners));
        });
     }
 
@@ -288,12 +300,13 @@ export class AsyncRaceApiService {
        store.dispatch(setWinnersAndWinnersPageAmount(winnersAmount, winnersPageAmount, pageNumber));
        return await response.json();
    }
-    // getCurrentCars = async (pageNumber: number) => {
-    //     const response = await fetch(`${this.apiBaseGarage}?_page=${pageNumber}&_limit=7`);
-    //     const carsAmount = Number(response.headers.get("X-Total-Count"));
-    //     const pageAmount = Math.ceil(carsAmount / 7);
-    //     console.log(pageNumber)
-    //     store.dispatch(setCarAndPageAmount(carsAmount, pageAmount, pageNumber));
-    //     return await response.json();
-    // }
+
+   updateCarList = async (currentPage: number) => {
+       await this.getAllCars()
+         .then((cars) => {
+             store.dispatch(getAllCarsAction(cars));
+             this.getCurrentCars(currentPage)
+               .then((cars) => store.dispatch(setCurrentCars(cars)));
+         });
+   }
 }

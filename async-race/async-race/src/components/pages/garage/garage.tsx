@@ -8,13 +8,13 @@ import RaceWinner from "../../race-winner/race-winner";
 import GaragePagination from "../../pagination/garage-pagination";
 
 //FIXME: fix any type
-const Garage = ({winner}: any) => {
+const Garage = ({winner, carAmount, currentPage}: any) => {
   return (
     <div className='mb-5'>
       <CarSettings/>
       {winner === undefined ? null : winner === null ? null : <RaceWinner/>}
-      <h2 className='page__title'>Garage (337)</h2>
-      <div className='page__pages'>Page №3</div>
+      <h2 className='page__title'>Garage ({carAmount})</h2>
+      <div className='page__pages'>Page №{currentPage}</div>
       <CarList/>
       <GaragePagination/>
     </div>
@@ -23,7 +23,9 @@ const Garage = ({winner}: any) => {
 
 const mapStateToProps = (state: StateInterface) => {
   return {
-    winner: state.currentWinner
+    winner: state.currentWinner,
+    carAmount: state.carAmount,
+    currentPage: state.currentPage
   }
 }
 
