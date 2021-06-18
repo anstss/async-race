@@ -15,8 +15,9 @@ const Winners = ({winners}: {winners: any}) => {
           <div className='navbar-brand col'>№</div>
           <div className='navbar-brand col'>Car</div>
           <div className='navbar-brand col'>Name</div>
-          <div className='navbar-brand col'>Wins</div>
-          <div className='navbar-brand col'>Best time (seconds)</div>
+          <div className='navbar-brand col interactive'
+               onClick={() => console.log('click')}>Wins ↑↓</div>
+          <div className='navbar-brand col interactive'>Best time (seconds) ↑↓</div>
         </li>
         {
           //FIXME: fix any type

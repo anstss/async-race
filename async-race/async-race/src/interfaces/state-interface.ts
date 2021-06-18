@@ -11,5 +11,10 @@ export default interface StateInterface {
   selectedCar: number | null,
   currentWinner: CurrentWinnerInterface | null,
   //FIXME: fix any type
-  winners: any
+  winners: any,
+  currentPage: number,
+  pageLimit: number,
+  carAmount: number,
+  pageAmount: number,
+  currentCars: CarInterface[] | []
 }

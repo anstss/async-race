@@ -5,6 +5,7 @@ import CarList from "../../car-list/car-list";
 import {connect} from "react-redux";
 import StateInterface from "../../../interfaces/state-interface";
 import RaceWinner from "../../race-winner/race-winner";
+import CarPagination from "../../pagination/car-pagination";
 
 //FIXME: fix any type
 const Garage = ({winner}: any) => {
@@ -15,6 +16,7 @@ const Garage = ({winner}: any) => {
       <h2 className='page__title'>Garage (337)</h2>
       <div className='page__pages'>Page №3</div>
       <CarList/>
+      <CarPagination/>
     </div>
   )
 }

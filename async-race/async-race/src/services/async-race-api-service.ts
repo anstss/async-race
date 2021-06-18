@@ -1,7 +1,7 @@
 import TimerInterface from "../interfaces/timer-inteface";
 import CarInterface from "../interfaces/car-interface";
 import store from "../store";
-import {showAndSetCurrentWinner, updateAllWinners, updateCarWins} from "../actions";
+import {showAndSetCurrentWinner, updateAllWinners, updateCarWins, setCarAndPageAmount} from "../actions";
 import {Dispatch} from "redux";
 
 export class AsyncRaceApiService {
@@ -10,8 +10,18 @@ export class AsyncRaceApiService {
     private apiBaseWinners = `${this.apiBase}/winners`;
     private apiBaseEngine = `${this.apiBase}/engine`;
 
+    //TODO: defaultPageLimit to const
     getAllCars = async () => {
         const response = await fetch(this.apiBaseGarage);
+        return await response.json();
+    }
+
+    getCurrentCars = async (pageNumber: number) => {
+        const response = await fetch(`${this.apiBaseGarage}?_page=${pageNumber}&_limit=7`);
+        const carsAmount = Number(response.headers.get("X-Total-Count"));
+        const pageAmount = Math.ceil(carsAmount / 7);
+        console.log(pageNumber)
+        store.dispatch(setCarAndPageAmount(carsAmount, pageAmount, pageNumber));
         return await response.json();
     }
 
@@ -254,4 +264,7 @@ export class AsyncRaceApiService {
        });
     }
 
+   // setNextPage = () => {
+   //
+   // }
 }

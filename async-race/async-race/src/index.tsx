@@ -10,11 +10,10 @@ import {bindActionCreators} from "redux";
 
 const asyncRaceApiService = new AsyncRaceApiService();
 
-const {getAllCarsAction} = bindActionCreators(actions, store.dispatch);
+const {getAllCarsAction, setCurrentCars} = bindActionCreators(actions, store.dispatch);
 
-asyncRaceApiService.getAllCars().then((cars) => {
-  getAllCarsAction(cars);
-});
+asyncRaceApiService.getAllCars().then((cars) => getAllCarsAction(cars));
+asyncRaceApiService.getCurrentCars(1).then((cars) => setCurrentCars(cars));
 
 asyncRaceApiService.updateWinners()
 

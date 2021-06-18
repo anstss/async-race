@@ -6,13 +6,17 @@ import PropsInterface from "../../interfaces/props-interface";
 import store from "../../store";
 import CarInterface from "../../interfaces/car-interface";
 
-const CarList = ({cars}: {cars: CarInterface[]}) => {
+const CarList = ({cars, currentCars}: {cars: CarInterface[], currentCars: CarInterface[]}) => {
+  console.log(cars)
+  console.log(currentCars)
+
   // const {cars} = store.getState();
   return (
     <ul className='list-unstyled'>
       {
-        cars.map((car) => {
-          const {name, color, id} = car;
+        currentCars.map((car) => {
+          const carWithInfo = cars.find((elem) => elem.id === car.id)
+          const {name, color, id} = carWithInfo!;
           return (
             <li key={id}>
               <CarContainer name={name} color={color} id={id}/>
@@ -26,7 +30,8 @@ const CarList = ({cars}: {cars: CarInterface[]}) => {
 
 const mapStateToProps = (state: StateInterface) => {
   return {
-    cars: state.cars
+    cars: state.cars,
+    currentCars: state.currentCars
   }
 }
 

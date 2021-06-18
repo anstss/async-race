@@ -11,7 +11,7 @@ import {generateRandCarName, generateRandColor} from "../../shared/utils";
 import CarInterface from "../../interfaces/car-interface";
 
 //FIXME: fix any type
-const CarSettings = ({ cars,
+const CarSettings = ({ cars, currentPage,
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
                        createCar, nameUpdateCar, colorUpdateCar,
@@ -106,7 +106,8 @@ const mapStateToProps = (state: StateInterface) => {
   return {
     cars: state.cars,
     nameUpdateCar: state.nameUpdateCar,
-    colorUpdateCar: state.colorUpdateCar
+    colorUpdateCar: state.colorUpdateCar,
+    currentPage: state.currentPage
   }
 }
 

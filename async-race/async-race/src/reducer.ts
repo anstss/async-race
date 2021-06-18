@@ -10,7 +10,12 @@ const initialState: StateInterface = {
   colorUpdateCar: '#000000',
   selectedCar: null,
   currentWinner: null,
-  winners: null
+  winners: null,
+  currentPage: 1,
+  pageLimit: 7,
+  carAmount: 0,
+  pageAmount: 1,
+  currentCars: []
 }
 
 //FIXME: fix any type
@@ -143,6 +148,25 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         ...state,
         winners: action.payload
       }
+    case 'SET_CAR_AND_PAGE_AMOUNT':
+      const {carAmount, pageAmount, pageNumber} = action.payload;
+      return {
+        ...state,
+        carAmount,
+        pageAmount,
+        currentPage: pageNumber
+      }
+
+    case 'SET_CURRENT_CARS':
+      return {
+        ...state,
+        currentCars: action.payload
+      }
+    // case 'SET_NEXT_PAGE' :
+    //   return {
+    //     ...state,
+    //     currentPage: state.currentPage + 1
+    //   }
 
     default:
       return state;

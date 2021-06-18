@@ -124,3 +124,27 @@ export const updateAllWinners = (transformedWinners: any) => {
     payload: transformedWinners
   }
 }
+
+export const setCarAndPageAmount = (carAmount: number, pageAmount: number, pageNumber: number) => {
+  return {
+    type: 'SET_CAR_AND_PAGE_AMOUNT',
+    payload: {
+      carAmount,
+      pageAmount,
+      pageNumber
+    }
+  }
+}
+
+export const setCurrentCars = (cars: CarInterface[]) => {
+  return {
+    type: 'SET_CURRENT_CARS',
+    payload: cars
+  }
+}
+
+// export const setNextPage = () => {
+//   return {
+//     type: 'SET_NEXT_PAGE'
+//   }
+// }
