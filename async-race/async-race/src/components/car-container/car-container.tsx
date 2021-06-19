@@ -62,6 +62,8 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
                   removeCar(id);
                   asyncRaceApiService.deleteCar(id)
                     .then(() => asyncRaceApiService.updateCarList(currentPage));
+                  asyncRaceApiService.deleteWinner(id)
+
                 }
                 }>Remove</button>
         <div className='car-container__car-name mx-3'>{name}</div>

@@ -25,6 +25,9 @@ const Winners = ({winners, currentWinners, currentWinnersPage}: {winners: any, c
           //FIXME: fix any type
           currentWinners.map((car: any) => {
             const winnersWithInfo = winners.find((elem: any) => elem.id === car.id);
+            if (!winnersWithInfo) {
+              return null;
+            }
             const {id, color, name, wins, time} = winnersWithInfo;
             //TODO: refactor
             const num = currentWinnersPage === 1 ? currentWinners.indexOf(car) + 1 : (currentWinners.indexOf(car) + 1) + ((currentWinnersPage - 1) * 10);
