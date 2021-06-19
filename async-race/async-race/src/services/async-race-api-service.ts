@@ -7,7 +7,7 @@ import {
     updateCarWins,
     setCarAndPageAmount,
     setWinnersAndWinnersPageAmount,
-    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo, switchStoreRaceMode
+    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo, addActiveCar, removeActiveCar
 } from "../actions";
 import {Dispatch} from "redux";
 
@@ -134,6 +134,7 @@ export class AsyncRaceApiService {
     }
 
     startEngine = async (id: number, trackElem: HTMLElement, carImage: HTMLElement) => {
+        store.dispatch(addActiveCar(id));
         const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=started`);
         const params = await response.json();
         const {velocity, distance} = params;
@@ -146,7 +147,9 @@ export class AsyncRaceApiService {
         // const currentCarTimerIndex = this.findCurrentCarTimerIndex(id);
         const response = await fetch(`${this.apiBaseEngine}?id=${id}&status=stopped`);
         const result = await response.json();
+
         this.clearAndDeleteCurrentCarTimer(id);
+        store.dispatch(removeActiveCar(id));
         carImage.style.transform = 'translateX(0px)';
         // window.clearInterval(this.timers[currentCarTimerIndex].timer);
         // this.timers.splice(currentCarTimerIndex, 1);
@@ -163,7 +166,7 @@ export class AsyncRaceApiService {
     }
     //TODO: REFACTOR - Transformed cars!!!
     startRace = async (cars: CarInterface[]) => {
-        store.dispatch(switchStoreRaceMode());
+        // store.dispatch(switchStoreRaceMode());
         const carsWithAdditionalInfo = store.getState().cars;
         console.log(carsWithAdditionalInfo)
         const transformedCars = cars.map((car) => {
@@ -198,7 +201,7 @@ export class AsyncRaceApiService {
                 this.winnerId = null;
                 console.log('ALL STOPPED')
                 console.log('HERE UNBLOCK RACE')
-                store.dispatch(switchStoreRaceMode());
+                // store.dispatch(switchStoreRaceMode());
             })
         });
     }

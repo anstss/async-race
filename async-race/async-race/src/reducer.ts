@@ -21,7 +21,8 @@ const initialState: StateInterface = {
   winnersPageAmount: 1,
   sortBy: 'wins',
   order: 'ASC',
-  raceMode: false
+  // raceMode: false,
+  activeCars: []
 }
 
 //FIXME: fix any type
@@ -185,10 +186,28 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         currentWinners: action.payload
       }
 
-    case 'SWITCH_STORE_RACE_MODE':
+    // case 'SWITCH_STORE_RACE_MODE':
+    //   return {
+    //     ...state,
+    //     raceMode: !state.raceMode
+    //   }
+
+    case 'ADD_ACTIVE_CAR':
+      const activeCarId = action.payload;
+      console.log(state.activeCars)
       return {
         ...state,
-        raceMode: !state.raceMode
+        activeCars: [...state.activeCars, activeCarId]
+      }
+    case 'REMOVE_ACTIVE_CAR':
+      const remoteCarId = action.payload;
+      const remoteCarIndex = state.activeCars.findIndex((id) => id === remoteCarId);
+      return {
+        ...state,
+        activeCars: [
+          ...state.activeCars.slice(0, remoteCarIndex),
+          ...state.activeCars.slice(remoteCarIndex + 1)
+        ]
       }
 
 

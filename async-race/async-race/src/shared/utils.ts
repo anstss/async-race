@@ -1,4 +1,5 @@
 import {carModels} from "./car-models";
+import store from "../store";
 
 export const generateRandColor = () => {
   let r = Math.floor(Math.random() * 256).toString(16);
@@ -16,4 +17,9 @@ export const generateRandCarName = () => {
   copyWithoutFirstName.splice(firstNameIndex, 1);
   const lastNameIndex = Math.floor(Math.random() * copyWithoutFirstName.length);
   return `${carModels[firstNameIndex]} ${copyWithoutFirstName[lastNameIndex]}`;
+}
+
+export const checkIsActiveCar = (id: number) => {
+  const activeCars = store.getState().activeCars;
+  return activeCars.find((activeCarId: number) => activeCarId === id);
 }

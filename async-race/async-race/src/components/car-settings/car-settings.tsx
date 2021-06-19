@@ -15,7 +15,7 @@ const CarSettings = ({ cars, currentCars, currentPage,
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
                        createCar, nameUpdateCar, colorUpdateCar,
-                       updateCar, createHundredCars, raceMode
+                       updateCar, createHundredCars, activeCars
                      }: any) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -96,9 +96,9 @@ const CarSettings = ({ cars, currentCars, currentPage,
                 onClick={() => sendRequestUpdateCar()}>Update car</button>
       </div>
       <div className='d-flex justify-content-center'>
-        <button className='btn btn-success mx-3 btn-size-sm' disabled={raceMode !== false}
+        <button className='btn btn-success mx-3 btn-size-sm' disabled={activeCars.length ? true : false}
                 onClick={() => asyncRaceApiService.startRace(currentCars)}>Race</button>
-        <button className='btn btn-primary btn-size-sm' disabled={raceMode === false}
+        <button className='btn btn-primary btn-size-sm' disabled={activeCars.length ? false : true}
                 onClick={() => asyncRaceApiService.stopRace(currentCars)}>Reset</button>
         <button className='btn btn-info mx-3 btn-size-lg'
                 onClick={() => createOneHundredCars()}>Generate cars</button>
@@ -114,7 +114,8 @@ const mapStateToProps = (state: StateInterface) => {
     colorUpdateCar: state.colorUpdateCar,
     currentPage: state.currentPage,
     currentCars: state.currentCars,
-    raceMode: state.raceMode
+    // raceMode: state.raceMode,
+    activeCars: state.activeCars
   }
 }
 

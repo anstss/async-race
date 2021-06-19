@@ -23,5 +23,6 @@ export default interface StateInterface {
   winnersPageAmount: number,
   sortBy: string,
   order: string,
-  raceMode: boolean
+  // raceMode: boolean,
+  activeCars: any[] | []
 }

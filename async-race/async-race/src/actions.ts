@@ -161,10 +161,24 @@ export const setCurrentWinners = (winners: any) => {
     payload: winners
   }
 }
+//
+// export const switchStoreRaceMode = () => {
+//   return {
+//     type: 'SWITCH_STORE_RACE_MODE'
+//   }
+// }
 
-export const switchStoreRaceMode = () => {
+export const addActiveCar = (id: number) => {
   return {
-    type: 'SWITCH_STORE_RACE_MODE'
+    type: 'ADD_ACTIVE_CAR',
+    payload: id
+  }
+}
+
+export const removeActiveCar = (id: number) => {
+  return {
+    type: 'REMOVE_ACTIVE_CAR',
+    payload: id
   }
 }
 

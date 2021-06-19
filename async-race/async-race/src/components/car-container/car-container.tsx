@@ -8,6 +8,7 @@ import StateInterface from "../../interfaces/state-interface";
 import {useContext} from "react";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
 import store from "../../store";
+import { checkIsActiveCar } from "../../shared/utils";
 
 // export const handlerUseRef = (ref: any) => {
 //   return ref.current;
@@ -21,11 +22,12 @@ import store from "../../store";
 
 //FIXME: fix any type
 const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo, currentPage, carAmount,
-                        getAllCarsAction, setCurrentCars, cars, currentCars, raceMode}:
+                        getAllCarsAction, setCurrentCars, cars, currentCars, activeCars}:
                         {
                           id: number, name: string, color: string, selectCar: any,
                           removeCar: any, setAdditionalCarInfo: any, currentPage: number, carAmount: number,
-                          getAllCarsAction: any, setCurrentCars: any, cars: any, currentCars: any, raceMode: boolean
+                          getAllCarsAction: any, setCurrentCars: any, cars: any, currentCars: any,
+                          activeCars: any
                         }) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -63,16 +65,16 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
                   asyncRaceApiService.deleteCar(id)
                     .then(() => asyncRaceApiService.updateCarList(currentPage));
                   asyncRaceApiService.deleteWinner(id)
-
                 }
                 }>Remove</button>
         <div className='car-container__car-name mx-3'>{name}</div>
       </div>
       <div className='car-container__track-container d-flex border-bottom align-items-end'>
         <button className='btn btn-sm btn-outline-success mb-2'
-                disabled={raceMode ? true : false}
+                disabled={checkIsActiveCar(id) ? true : false}
                 onClick={() => asyncRaceApiService.startEngine(id, returnCarTrack()!, returnCarImage()!)}>Start</button>
         <button className='btn btn-sm btn-outline-warning mx-2 mb-2'
+                disabled={checkIsActiveCar(id) ? false : true}
                 onClick={() => asyncRaceApiService.stopEngine(id, returnCarImage()!)}>Stop</button>
         <div ref={carTrack} className='car-container__track d-flex'>
           <svg ref={carImage} className='car' width="594" height="239" viewBox="0 0 594 239" fill="none"
@@ -119,7 +121,8 @@ const mapStateToProps = (state: StateInterface) => {
     carAmount: state.carAmount,
     cars: state.cars,
     currentCars: state.currentCars,
-    raceMode: state.raceMode
+    // raceMode: state.raceMode,
+    activeCars: state.activeCars
   };
 }
 
