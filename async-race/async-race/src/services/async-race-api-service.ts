@@ -7,7 +7,7 @@ import {
     updateCarWins,
     setCarAndPageAmount,
     setWinnersAndWinnersPageAmount,
-    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo
+    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo, switchStoreRaceMode
 } from "../actions";
 import {Dispatch} from "redux";
 
@@ -163,6 +163,7 @@ export class AsyncRaceApiService {
     }
     //TODO: REFACTOR - Transformed cars!!!
     startRace = async (cars: CarInterface[]) => {
+        store.dispatch(switchStoreRaceMode());
         const carsWithAdditionalInfo = store.getState().cars;
         console.log(carsWithAdditionalInfo)
         const transformedCars = cars.map((car) => {
@@ -197,6 +198,7 @@ export class AsyncRaceApiService {
                 this.winnerId = null;
                 console.log('ALL STOPPED')
                 console.log('HERE UNBLOCK RACE')
+                store.dispatch(switchStoreRaceMode());
             })
         });
     }

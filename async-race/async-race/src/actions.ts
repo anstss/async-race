@@ -161,6 +161,13 @@ export const setCurrentWinners = (winners: any) => {
     payload: winners
   }
 }
+
+export const switchStoreRaceMode = () => {
+  return {
+    type: 'SWITCH_STORE_RACE_MODE'
+  }
+}
+
 // export const setNextPage = () => {
 //   return {
 //     type: 'SET_NEXT_PAGE'

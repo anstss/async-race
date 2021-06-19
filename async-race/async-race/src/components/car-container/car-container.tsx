@@ -21,11 +21,11 @@ import store from "../../store";
 
 //FIXME: fix any type
 const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo, currentPage, carAmount,
-                        getAllCarsAction, setCurrentCars, cars, currentCars}:
+                        getAllCarsAction, setCurrentCars, cars, currentCars, raceMode}:
                         {
-                          id: number, name: string, color: string, selectCar: any, removeCar: any,
-                          setAdditionalCarInfo: any, currentPage: number, carAmount: number, getAllCarsAction: any,
-                          setCurrentCars: any, cars: any, currentCars: any
+                          id: number, name: string, color: string, selectCar: any,
+                          removeCar: any, setAdditionalCarInfo: any, currentPage: number, carAmount: number,
+                          getAllCarsAction: any, setCurrentCars: any, cars: any, currentCars: any, raceMode: boolean
                         }) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -68,6 +68,7 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
       </div>
       <div className='car-container__track-container d-flex border-bottom align-items-end'>
         <button className='btn btn-sm btn-outline-success mb-2'
+                disabled={raceMode ? true : false}
                 onClick={() => asyncRaceApiService.startEngine(id, returnCarTrack()!, returnCarImage()!)}>Start</button>
         <button className='btn btn-sm btn-outline-warning mx-2 mb-2'
                 onClick={() => asyncRaceApiService.stopEngine(id, returnCarImage()!)}>Stop</button>
@@ -115,7 +116,8 @@ const mapStateToProps = (state: StateInterface) => {
     currentPage: state.currentPage,
     carAmount: state.carAmount,
     cars: state.cars,
-    currentCars: state.currentCars
+    currentCars: state.currentCars,
+    raceMode: state.raceMode
   };
 }
 

@@ -22,5 +22,6 @@ export default interface StateInterface {
   currentWinnersPage: number,
   winnersPageAmount: number,
   sortBy: string,
-  order: string
+  order: string,
+  raceMode: boolean
 }

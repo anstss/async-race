@@ -20,7 +20,8 @@ const initialState: StateInterface = {
   currentWinnersPage: 1,
   winnersPageAmount: 1,
   sortBy: 'wins',
-  order: 'ASC'
+  order: 'ASC',
+  raceMode: false
 }
 
 //FIXME: fix any type
@@ -183,11 +184,13 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         ...state,
         currentWinners: action.payload
       }
-    // case 'SET_NEXT_PAGE' :
-    //   return {
-    //     ...state,
-    //     currentPage: state.currentPage + 1
-    //   }
+
+    case 'SWITCH_STORE_RACE_MODE':
+      return {
+        ...state,
+        raceMode: !state.raceMode
+      }
+
 
     default:
       return state;
