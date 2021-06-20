@@ -9,12 +9,13 @@ import * as actions from "../../actions";
 const GaragePagination = ({
                       currentPage,
                       pageAmount,
-                      setCurrentCars
-                    }: { currentPage: number, pageAmount: number, setCurrentCars: any }) => {
+                      setCurrentCars,
+                      activeCars
+                    }: { currentPage: number, pageAmount: number, setCurrentCars: any, activeCars: any }) => {
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
 
-  const disabledPrev = currentPage === 1 ? 'disabled' : '' ;
-  const disabledNext = currentPage === pageAmount ? 'disabled' : '' ;
+  const disabledPrev = currentPage === 1 ? 'disabled' : activeCars.length ? 'disabled' : '' ;
+  const disabledNext = currentPage === pageAmount ? 'disabled' : activeCars.length ? 'disabled' : '' ;
 
   return (
     <div>
@@ -41,7 +42,8 @@ const GaragePagination = ({
 const mapStateToProps = (state: StateInterface) => {
   return {
     currentPage: state.currentPage,
-    pageAmount: state.pageAmount
+    pageAmount: state.pageAmount,
+    activeCars: state.activeCars
   }
 }
 
