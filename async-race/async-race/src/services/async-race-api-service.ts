@@ -7,7 +7,10 @@ import {
     updateCarWins,
     setCarAndPageAmount,
     setWinnersAndWinnersPageAmount,
-    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo, addActiveCar, removeActiveCar
+    setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo, addActiveCar, removeActiveCar,
+    //TODO: uncomment it
+    // setCarPosition, clearCarPosition
+    //TODO: uncomment it
 } from "../actions";
 import {Dispatch} from "redux";
 
@@ -90,7 +93,7 @@ export class AsyncRaceApiService {
     private resultsSwitchEngine: Promise<any>[] = [];
 
     private startAnimation = (id: number, animationTime: number, trackElem: HTMLElement, carImage: HTMLElement) => {
-        console.log(trackElem)
+        // console.log(trackElem)     //TODO: uncomment it
         const trackLength = trackElem.offsetWidth;
         const carLength = carImage.getBoundingClientRect().width;
         const startTime = Date.now();
@@ -104,6 +107,9 @@ export class AsyncRaceApiService {
                 return;
             }
             currentPos += step;
+            //TODO: uncomment it
+            // store.dispatch(setCarPosition(id, currentPos));
+            //TODO: uncomment it
             carImage.style.transform = `translateX(${currentPos}px)`;
         }, 20);
         this.timers.push({
@@ -139,7 +145,7 @@ export class AsyncRaceApiService {
         const params = await response.json();
         const {velocity, distance} = params;
         const animationTime = distance / velocity;
-        console.log(trackElem)
+        // console.log(trackElem) //TODO: uncomment it
         this.startAnimation(id, animationTime, trackElem, carImage);
     }
 
@@ -150,6 +156,9 @@ export class AsyncRaceApiService {
 
         this.clearAndDeleteCurrentCarTimer(id);
         store.dispatch(removeActiveCar(id));
+        //TODO: uncomment it
+        // store.dispatch(clearCarPosition(id));
+        //TODO: uncomment it
         carImage.style.transform = 'translateX(0px)';
         // window.clearInterval(this.timers[currentCarTimerIndex].timer);
         // this.timers.splice(currentCarTimerIndex, 1);
@@ -168,7 +177,7 @@ export class AsyncRaceApiService {
     startRace = async (cars: CarInterface[]) => {
         // store.dispatch(switchStoreRaceMode());
         const carsWithAdditionalInfo = store.getState().cars;
-        console.log(carsWithAdditionalInfo)
+        // console.log(carsWithAdditionalInfo) //TODO: uncomment it
         const transformedCars = cars.map((car) => {
             const carInfo = carsWithAdditionalInfo.find((elem) => elem.id === car.id);
             return {
@@ -196,11 +205,11 @@ export class AsyncRaceApiService {
         console.log(this.resultsSwitchEngine.length)
         Promise.allSettled(stopAllCars).then(() => {
             Promise.allSettled(this.resultsSwitchEngine).then(() => {
-                console.log('clear winner')
+                // console.log('clear winner') //TODO: uncomment it
                 this.resultsSwitchEngine.length = 0;
                 this.winnerId = null;
-                console.log('ALL STOPPED')
-                console.log('HERE UNBLOCK RACE')
+                // console.log('ALL STOPPED') //TODO: uncomment it
+                // console.log('HERE UNBLOCK RACE') //TODO: uncomment it
                 // store.dispatch(switchStoreRaceMode());
             })
         });

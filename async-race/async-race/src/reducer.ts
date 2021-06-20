@@ -22,7 +22,10 @@ const initialState: StateInterface = {
   sortBy: 'wins',
   order: 'ASC',
   // raceMode: false,
-  activeCars: []
+  activeCars: [],
+  //TODO: uncomment it
+  // carsPositions: []
+  //TODO: uncomment it
 }
 
 //FIXME: fix any type
@@ -194,7 +197,7 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
 
     case 'ADD_ACTIVE_CAR':
       const activeCarId = action.payload;
-      console.log(state.activeCars)
+      // console.log(state.activeCars) //TODO: uncomment it
       return {
         ...state,
         activeCars: [...state.activeCars, activeCarId]
@@ -220,6 +223,52 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         order: newOrder
       }
 
+    //TODO: uncomment it
+    // //  FIXME: BAG HERE!!!!!!
+    // case 'SET_CAR_POSITION':
+    //   const {id: carIdPos, currentPosition} = action.payload;
+    //   const currentPos = {
+    //     id: carIdPos,
+    //     currentPosition
+    //   }
+    //   console.log(state.carsPositions)
+    //   // console.log(carIdPos)
+    //   const prevPos = state.carsPositions.findIndex(({id}) => id === carIdPos);
+    //   console.log(prevPos)
+    //   if (prevPos) {
+    //     return {
+    //       ...state,
+    //       carsPositions: [
+    //         ...state.carsPositions.slice(0, prevPos),
+    //         currentPos,
+    //         ...state.carsPositions.slice(prevPos + 1)
+    //       ]
+    //     }
+    //   }
+    //   return {
+    //     ...state,
+    //     carsPositions: [
+    //       ...state.carsPositions,
+    //       currentPos
+    //     ]
+    //   }
+    //
+    // case 'CLEAR_CAR_POSITION':
+    //   const clearId = action.payload;
+    //   const clearIndex = state.carsPositions.findIndex(({id}) => id === clearId);
+    //   const clearedPosition = {
+    //     id: clearId,
+    //     currentPosition: 0
+    //   }
+    //   return {
+    //     ...state,
+    //     carsPositions: [
+    //       ...state.carsPositions.slice(0, clearIndex),
+    //       clearedPosition,
+    //       ...state.carsPositions.slice(clearIndex + 1)
+    //     ]
+    //   }
+//TODO: uncomment it
 
     default:
       return state;

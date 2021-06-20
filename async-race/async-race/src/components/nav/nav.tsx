@@ -5,14 +5,30 @@ import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
 
-const Nav = ({showView, cars, winners}: any) => {
+const Nav = ({showView, currentPage, cars, carsPositions, winners}: any) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
-
+  //TODO: refactor!!!
   return (
     <nav className='nav d-flex justify-content-center my-3'>
       <button className='btn btn-primary btn-lg mx-3'
-              onClick={() => showView('garage')}>
+              onClick={() => {
+                showView('garage');
+                // asyncRaceApiService.getCurrentCars(currentPage)
+                //   .then((currentCars) => {
+                //     const withSavedPositions = currentCars.map((car: any) => {
+                //       const carWithImg = cars.find((elem: any) => elem.id === car.id);
+                //       const carWithPosition = carsPositions.find((elem: any) => elem.id === car.id);
+                //       console.log(carWithImg)
+                //       return {
+                //         ...carWithImg,
+                //         carPosition: carWithPosition.carPosition
+                //       }
+                //     });
+                //
+                //   })
+              }
+              }>
         Garage
       </button>
       <button className='btn btn-primary btn-lg mx-3'
@@ -26,10 +42,13 @@ const Nav = ({showView, cars, winners}: any) => {
     </nav>
   )
 }
-
-const mapStateToProps = ({cars}: StateInterface) => {
+//TODO: uncomment it
+/*carsPositions*/
+const mapStateToProps = ({cars, currentPage}: StateInterface) => {
   return {
-    cars: cars
+    cars,
+    currentPage,
+    // carsPositions //TODO: uncomment it
   }
 }
 
