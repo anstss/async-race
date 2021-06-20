@@ -182,6 +182,13 @@ export const removeActiveCar = (id: number) => {
   }
 }
 
+export const changeSortBy = (sortBy: 'string') => {
+  return {
+    type: 'CHANGE_SORT_BY',
+    payload: sortBy
+  }
+}
+
 // export const setNextPage = () => {
 //   return {
 //     type: 'SET_NEXT_PAGE'

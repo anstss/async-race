@@ -210,6 +210,16 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         ]
       }
 
+    case 'CHANGE_SORT_BY':
+      const sortBy = action.payload;
+      const currentOrder = state.order;
+      const newOrder = currentOrder === 'ASC' ? 'DESC' : 'ASC';
+      return {
+        ...state,
+        sortBy,
+        order: newOrder
+      }
+
 
     default:
       return state;
