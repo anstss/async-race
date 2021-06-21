@@ -49,14 +49,13 @@ const Nav = ({showView, currentPage, cars, carsPositions, winners, setCurrentWin
     </nav>
   )
 }
-//TODO: uncomment it
-/*carsPositions*/
-const mapStateToProps = ({cars, currentPage, currentWinnersPage}: StateInterface) => {
+
+const mapStateToProps = ({cars, currentPage, currentWinnersPage, carsPositions}: StateInterface) => {
   return {
     cars,
     currentPage,
-    currentWinnersPage
-    // carsPositions //TODO: uncomment it
+    currentWinnersPage,
+    carsPositions
   }
 }
 

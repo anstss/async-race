@@ -25,7 +25,5 @@ export default interface StateInterface {
   order: string,
   // raceMode: boolean,
   activeCars: any[] | [],
-  //TODO: uncomment it
-  // carsPositions: any[] | []
-  //TODO: uncomment it
+  carsPositions: any[] | []
 }

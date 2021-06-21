@@ -22,12 +22,12 @@ import { checkIsActiveCar } from "../../shared/utils";
 
 //FIXME: fix any type
 const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo, currentPage, carAmount,
-                        getAllCarsAction, setCurrentCars, cars, currentCars, activeCars, /*carsPositions,*/ view}: //TODO: uncomment it
+                        getAllCarsAction, setCurrentCars, cars, currentCars, activeCars, carsPositions, view}:
                         {
                           id: number, name: string, color: string, selectCar: any,
                           removeCar: any, setAdditionalCarInfo: any, currentPage: number, carAmount: number,
                           getAllCarsAction: any, setCurrentCars: any, cars: any, currentCars: any,
-                          activeCars: any, /*carsPositions: any, */view: any //TODO: uncomment it
+                          activeCars: any, carsPositions: any, view: any
                         }) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -45,39 +45,40 @@ const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarIn
   // addAdditionalInfo(id, returnCarTrack, returnCarImage, setAdditionalCarInfo);
 
   useEffect(() => {
-    console.log('woork')
+    // console.log('woork')
     const track = returnCarTrack();
     const carImg = returnCarImage();
     if (track && carImg) {
       setAdditionalCarInfo(id, track, carImg);
     }
   }, [carAmount, currentCars]);
-//TODO: uncomment it
-//   let currentPos;
-//   //
-//   useEffect(() => {
-//     // const currentElem = carsPositions.find((elem: any) => elem.id === id);
-//     // if (currentElem) {
-//     //   currentPos = currentElem.currentPosition;
-//     //   console.log(currentElem)
-//     // }
-//     currentPos = getPosition(id);
-//     // transform={`translate(${currentPos}, 0)`}
-//
-//     // carImage.current!.transform
-//     // @ts-ignore
-//     carImage.current.style.transform = `translateX(${currentPos}px)`;
-//     // console.log(carImage.current.style)
-//   }, [carsPositions, view])
-//
-//   const getPosition = (id: number) => {
-//     let currentElem = carsPositions.find((elem: any) => elem.id === id);
-//     if (currentElem) {
-//       console.log(currentElem)
-//       return currentElem.currentPosition;
-//     }
-//   }
-  //TODO: uncomment it
+
+  let currentPos;
+  //
+  useEffect(() => {
+    // const currentElem = carsPositions.find((elem: any) => elem.id === id);
+    // if (currentElem) {
+    //   currentPos = currentElem.currentPosition;
+    //   console.log(currentElem)
+    // }
+    currentPos = getPosition(id);
+    // transform={`translate(${currentPos}, 0)`}
+
+    // carImage.current!.transform
+
+    // @ts-ignore
+    carImage.current.style.transform = `translateX(${currentPos}px)`;
+    // console.log(carImage.current.style)
+  }, [carsPositions, view])
+
+  const getPosition = (id: number) => {
+    let currentElem = carsPositions.find((elem: any) => elem.id === id);
+    if (currentElem) {
+      // console.log(currentElem)
+      return currentElem.currentPosition;
+    }
+  }
+
 
   //TODO: move it to async-service or actions (mb need thunk)?
   return (
@@ -149,7 +150,7 @@ const mapStateToProps = (state: StateInterface) => {
     currentCars: state.currentCars,
     // raceMode: state.raceMode,
     activeCars: state.activeCars,
-    // carsPositions: state.carsPositions, //TODO: uncomment it
+    carsPositions: state.carsPositions,
     view: state.view
   };
 }

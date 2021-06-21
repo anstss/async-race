@@ -189,24 +189,23 @@ export const changeSortBy = (sortBy: 'string') => {
   }
 }
 
-//TODO: uncomment it
-// export const setCarPosition = (id: number, currentPosition: number) => {
-//   return {
-//     type: 'SET_CAR_POSITION',
-//     payload: {
-//       id,
-//       currentPosition
-//     }
-//   }
-// }
-//
-// export const clearCarPosition = (id: number) => {
-//   return {
-//     type: 'CLEAR_CAR_POSITION',
-//     payload: id
-//   }
-// }
-//TODO: uncomment it
+
+export const setCarPosition = (id: number, currentPosition: number) => {
+  return {
+    type: 'SET_CAR_POSITION',
+    payload: {
+      id,
+      currentPosition
+    }
+  }
+}
+
+export const clearCarPosition = (id: number) => {
+  return {
+    type: 'CLEAR_CAR_POSITION',
+    payload: id
+  }
+}
 
 // export const setNextPage = () => {
 //   return {
