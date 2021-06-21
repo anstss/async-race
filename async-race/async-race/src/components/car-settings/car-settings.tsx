@@ -15,7 +15,8 @@ const CarSettings = ({ cars, currentCars, currentPage,
                        getNameCreateCar, getNameUpdateCar,
                        getColorCreateCar, getColorUpdateCar,
                        createCar, nameUpdateCar, colorUpdateCar,
-                       updateCar, createHundredCars, activeCars
+                       updateCar, createHundredCars, activeCars,
+                       nameCreateCar, colorCreateCar
                      }: any) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
@@ -77,9 +78,11 @@ const CarSettings = ({ cars, currentCars, currentPage,
     <div className='mt-4'>
       <div className='car-setting form-group d-flex justify-content-center my-3'>
         <input ref={nameInputCreateCar} type='text'
+               value={nameCreateCar}
                className='form-control car-setting__input col-xs-2 mx-3' placeholder='Enter car name'
                onInput={() => getNameCreateCar(handlerOnChangeNameCreateCar())}/>
         <input ref={colorInputCreateCar} type='color' className='form-control car-setting__color col-xs-2'
+               value={colorCreateCar}
                onChange={() => getColorCreateCar(handlerOnChangeColorCreateCar())}/>
         <button className='btn btn-primary mx-3 btn-size-normal'
                 onClick={() => sendRequestCreateCar()}>Create new car</button>
@@ -115,7 +118,9 @@ const mapStateToProps = (state: StateInterface) => {
     currentPage: state.currentPage,
     currentCars: state.currentCars,
     // raceMode: state.raceMode,
-    activeCars: state.activeCars
+    activeCars: state.activeCars,
+    nameCreateCar: state.nameCreateCar,
+    colorCreateCar: state.colorCreateCar
   }
 }
 
