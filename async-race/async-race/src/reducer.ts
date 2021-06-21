@@ -203,13 +203,18 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
     case 'REMOVE_ACTIVE_CAR':
       const remoteCarId = action.payload;
       const remoteCarIndex = state.activeCars.findIndex((id) => id === remoteCarId);
-      return {
-        ...state,
-        activeCars: [
-          ...state.activeCars.slice(0, remoteCarIndex),
-          ...state.activeCars.slice(remoteCarIndex + 1)
-        ]
+      // console.log(remoteCarIndex)
+      if (remoteCarIndex > -1) {
+        return {
+          ...state,
+          activeCars: [
+            ...state.activeCars.slice(0, remoteCarIndex),
+            ...state.activeCars.slice(remoteCarIndex + 1)
+          ]
+        }
       }
+      return state;
+
 
     case 'CHANGE_SORT_BY':
       const sortBy = action.payload;
@@ -221,7 +226,6 @@ const reducer = (state = initialState, action: ActionsInterface<any>) => {
         order: newOrder
       }
 
-    //  FIXME: BAG HERE!!!!!!
     case 'SET_CAR_POSITION':
       const {id: carIdPos, currentPosition} = action.payload;
       // console.log(currentPosition)

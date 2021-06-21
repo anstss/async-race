@@ -8,7 +8,7 @@ import {
     setCarAndPageAmount,
     setWinnersAndWinnersPageAmount,
     setCurrentWinners, removeCar, getAllCarsAction, setCurrentCars, setAdditionalCarInfo, addActiveCar, removeActiveCar,
-    setCarPosition, clearCarPosition
+    setCarPosition, clearCarPosition, /*clearActiveCars*/
 } from "../actions";
 import {Dispatch} from "redux";
 
@@ -223,12 +223,14 @@ export class AsyncRaceApiService {
         transformedCars.forEach((car) => {
             stopAllCars.push(this.stopEngine(car.id!, car.carImage!))
         });
-        console.log(this.resultsSwitchEngine.length)
+        // console.log(this.resultsSwitchEngine.length)
         Promise.allSettled(stopAllCars).then(() => {
             Promise.allSettled(this.resultsSwitchEngine).then(() => {
                 // console.log('clear winner')
                 this.resultsSwitchEngine.length = 0;
                 this.winnerId = null;
+                // store.dispatch(clearActiveCars());
+                // console.log(store.getState().activeCars)
                 // console.log('ALL STOPPED')
                 // console.log('HERE UNBLOCK RACE')
                 // store.dispatch(switchStoreRaceMode());
@@ -251,7 +253,7 @@ export class AsyncRaceApiService {
         let bestTime = timeInSeconds;
         let wins = 1;
         if (response.status === 404) {
-            console.log('need new winner');
+            // console.log('need new winner');
             this.createWinner(id, wins, bestTime);
         }
         if (response.status === 200) {

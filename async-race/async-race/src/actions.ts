@@ -206,6 +206,12 @@ export const clearCarPosition = (id: number) => {
     payload: id
   }
 }
+//
+// export const clearActiveCars = () => {
+//   return {
+//     type: 'CLEAR_ACTIVE_CARS'
+//   }
+// }
 
 // export const setNextPage = () => {
 //   return {
