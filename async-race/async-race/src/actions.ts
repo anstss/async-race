@@ -176,8 +176,6 @@ export const addActiveCar = (id: number) => {
 }
 
 export const removeActiveCar = (id: number) => {
-  // const remoteCarIndex = getCarIndex(id);
-  // console.log(remoteCarIndex)
   return {
     type: 'REMOVE_ACTIVE_CAR',
     payload: id
