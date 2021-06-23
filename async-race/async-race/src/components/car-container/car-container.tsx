@@ -1,108 +1,59 @@
 import "./car-container.scss";
-import racingFlag from "../../assets/racing-flag.svg";
-import React, {Ref, useEffect, useRef} from "react";
+import React, {useEffect, useRef, useContext} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
+import racingFlag from "../../assets/racing-flag.svg";
 import * as actions from "../../actions";
 import StateInterface from "../../interfaces/state-interface";
-import {useContext} from "react";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
-import store from "../../store";
-import { checkIsActiveCar } from "../../shared/utils";
+import {checkIsActiveCar, getPosition, returnCurrentRef} from "../../shared/utils";
 
-// export const handlerUseRef = (ref: any) => {
-//   return ref.current;
-// }
-
-// export const addAdditionalInfo = (id: number, getTrack: any, getImage: any, action: any) => {
-//   const track = getTrack();
-//   const carImg = getImage();
-//   action(id, track, carImg);
-// }
-
-//FIXME: fix any type
-const CarContainer = ({id, name, color, selectCar, removeCar, setAdditionalCarInfo, currentPage, carAmount,
-                        getAllCarsAction, setCurrentCars, cars, currentCars, activeCars, carsPositions, view}:
+const CarContainer = ({id, name, color, selectCar, setAdditionalCarInfo, currentPage, carAmount,
+                        currentCars, carsPositions, view}:
                         {
                           id: number, name: string, color: string, selectCar: any,
-                          removeCar: any, setAdditionalCarInfo: any, currentPage: number, carAmount: number,
-                          getAllCarsAction: any, setCurrentCars: any, cars: any, currentCars: any,
-                          activeCars: any, carsPositions: any, view: any
+                          setAdditionalCarInfo: any, currentPage: number, carAmount: number,
+                          currentCars: any, carsPositions: any, view: any
                         }) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
 
   const carTrack = useRef(null);
-  const returnCarTrack = () => {
-    return carTrack.current;
-  }
-
   const carImage = useRef(null);
-  const returnCarImage = () => {
-    return carImage.current;
-  }
-
-  // addAdditionalInfo(id, returnCarTrack, returnCarImage, setAdditionalCarInfo);
 
   useEffect(() => {
-    // console.log('woork')
-    const track = returnCarTrack();
-    const carImg = returnCarImage();
+    const track = returnCurrentRef(carTrack);
+    const carImg = returnCurrentRef(carImage);
     if (track && carImg) {
       setAdditionalCarInfo(id, track, carImg);
     }
   }, [carAmount, currentCars]);
 
   let currentPos;
-  //
+
   useEffect(() => {
-    // const currentElem = carsPositions.find((elem: any) => elem.id === id);
-    // if (currentElem) {
-    //   currentPos = currentElem.currentPosition;
-    //   console.log(currentElem)
-    // }
-    currentPos = getPosition(id);
-    // transform={`translate(${currentPos}, 0)`}
-
-    // carImage.current!.transform
-
+    currentPos = getPosition(id, carsPositions);
     // @ts-ignore
     carImage.current.style.transform = `translateX(${currentPos}px)`;
-    // console.log(carImage.current.style)
   }, [carsPositions, view])
 
-  const getPosition = (id: number) => {
-    let currentElem = carsPositions.find((elem: any) => elem.id === id);
-    if (currentElem) {
-      // console.log(currentElem)
-      return currentElem.currentPosition;
-    }
-  }
 
-
-  //TODO: move it to async-service or actions (mb need thunk)?
   return (
     <div>
       <div className='car-container__header d-flex align-items-center my-3'>
         <button className='btn btn-primary'
                 onClick={() => selectCar(id)}>Select</button>
         <button className='btn btn-danger mx-2'
-                onClick={() => {
-                  removeCar(id);
-                  asyncRaceApiService.deleteCar(id)
-                    .then(() => asyncRaceApiService.updateCarList(currentPage));
-                  asyncRaceApiService.deleteWinner(id)
-                }
-                }>Remove</button>
+                onClick={() => asyncRaceApiService.removeCarFromGarageAndWinners(id, currentPage)}>Remove</button>
         <div className='car-container__car-name mx-3'>{name}</div>
       </div>
       <div className='car-container__track-container d-flex border-bottom align-items-end'>
         <button className='btn btn-sm btn-outline-success mb-2'
                 disabled={checkIsActiveCar(id) ? true : false}
-                onClick={() => asyncRaceApiService.startEngine(id, returnCarTrack()!, returnCarImage()!)}>Start</button>
+                onClick={() => asyncRaceApiService.startEngine(id, returnCurrentRef(carTrack), returnCurrentRef(carImage))}>Start</button>
         <button className='btn btn-sm btn-outline-warning mx-2 mb-2'
                 disabled={checkIsActiveCar(id) ? false : true}
-                onClick={() => asyncRaceApiService.stopEngine(id, returnCarImage()!)}>Stop</button>
+                onClick={() => asyncRaceApiService.stopEngine(id)}>Stop</button>
         <div ref={carTrack} className='car-container__track d-flex'>
           <svg ref={carImage} className='car' width="594" height="239" viewBox="0 0 594 239" fill="none"
                xmlns="http://www.w3.org/2000/svg">
@@ -146,10 +97,7 @@ const mapStateToProps = (state: StateInterface) => {
   return {
     currentPage: state.currentPage,
     carAmount: state.carAmount,
-    cars: state.cars,
     currentCars: state.currentCars,
-    // raceMode: state.raceMode,
-    activeCars: state.activeCars,
     carsPositions: state.carsPositions,
     view: state.view
   };

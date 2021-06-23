@@ -5,13 +5,12 @@ import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/asyn
 import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
 
-//FIXME: fix any type
 const GaragePagination = ({
                       currentPage,
                       pageAmount,
-                      setCurrentCars,
                       activeCars
-                    }: { currentPage: number, pageAmount: number, setCurrentCars: any, activeCars: any }) => {
+                    }: { currentPage: number, pageAmount: number, activeCars: any }) => {
+
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
 
   const disabledPrev = currentPage === 1 ? 'disabled' : activeCars.length ? 'disabled' : '' ;
@@ -22,17 +21,11 @@ const GaragePagination = ({
       <ul className="pagination">
         <li className={`page-item ${disabledPrev}`}>
           <button className="page-link"
-                  onClick={() => {
-                    asyncRaceApiService.getCurrentCars(currentPage - 1)
-                      .then((cars) => setCurrentCars(cars));
-                  }}>&laquo;</button>
+                  onClick={() => asyncRaceApiService.showPrevGaragePage(currentPage)}>&laquo;</button>
         </li>
         <li className={`page-item ${disabledNext}`}>
           <button className="page-link"
-                  onClick={() => {
-                    asyncRaceApiService.getCurrentCars(currentPage + 1)
-                      .then((cars) => setCurrentCars(cars));
-                  }}>&raquo;</button>
+                  onClick={() => asyncRaceApiService.showNextGaragePage(currentPage)}>&raquo;</button>
         </li>
       </ul>
     </div>

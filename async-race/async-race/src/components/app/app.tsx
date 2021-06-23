@@ -1,24 +1,19 @@
 import './app.scss';
 import React from 'react';
+import {connect} from "react-redux";
 import Nav from "../nav/nav";
 import Garage from "../pages/garage/garage";
 import Winners from "../pages/winners/winners";
-import Pagination from "../pagination/garage-pagination";
 import StateInterface from "../../interfaces/state-interface";
-import {connect} from "react-redux";
+import {GARAGE_VIEW} from "../../shared/constants";
 
 const App = ({view}: {view: string}) => {
-  // const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
-  // console.log(asyncRaceApiService.getAllCars());
-  // const {view} = store.getState();
 
   return (
     <div className='mx-5'>
       <h1 className='app-title text-center my-2'>Async Race</h1>
       <Nav/>
-      {view === 'garage' ? <Garage/> : <Winners/>}
-      {/*<Garage/>*/}
-      {/*/!*<Winners/>*!/*/}
+      {view === GARAGE_VIEW ? <Garage/> : <Winners/>}
     </div>
   )
 }

@@ -1,11 +1,10 @@
 import "./race-winner.scss";
 import React from "react";
 import {connect} from "react-redux";
-import StateInterface from "../../interfaces/state-interface";
 import {bindActionCreators, Dispatch} from "redux";
+import StateInterface from "../../interfaces/state-interface";
 import * as actions from "../../actions";
 
-//FIXME: fix any type
 const RaceWinner = ({winner, hideAndClearCurrentWinner}: any) => {
 
   const {name, winTime} = winner;

@@ -1,16 +1,15 @@
 import React, {useContext} from "react";
 import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import StateInterface from "../../interfaces/state-interface";
 import {AsyncRaceApiServiceContext} from "../async-race-api-service-context/async-race-api-service-context";
-import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../actions";
 
-//FIXME: fix any type
 const WinnersPagination = ({
                             currentWinnersPage,
                             winnersPageAmount,
-                            setCurrentWinners
-                          }: { currentWinnersPage: number, winnersPageAmount: number, setCurrentWinners: any }) => {
+                          }: { currentWinnersPage: number, winnersPageAmount: number}) => {
+
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
 
   const disabledPrev = currentWinnersPage === 1 ? 'disabled' : '' ;
@@ -21,17 +20,11 @@ const WinnersPagination = ({
       <ul className="pagination">
         <li className={`page-item ${disabledPrev}`}>
           <button className="page-link"
-                  onClick={() => {
-                    asyncRaceApiService.getCurrentWinners(currentWinnersPage - 1)
-                      .then((winners) => setCurrentWinners(winners));
-                  }}>&laquo;</button>
+                  onClick={() => asyncRaceApiService.showPrevWinnersPage(currentWinnersPage)}>&laquo;</button>
         </li>
         <li className={`page-item ${disabledNext}`}>
           <button className="page-link"
-                  onClick={() => {
-                    asyncRaceApiService.getCurrentWinners(currentWinnersPage + 1)
-                      .then((winners) => setCurrentWinners(winners));
-                  }}>&raquo;</button>
+                  onClick={() => asyncRaceApiService.showNextWinnersPage(currentWinnersPage)}>&raquo;</button>
         </li>
       </ul>
     </div>
@@ -42,7 +35,6 @@ const mapStateToProps = (state: StateInterface) => {
   return {
     currentWinnersPage: state.currentWinnersPage,
     winnersPageAmount: state.winnersPageAmount,
-
   }
 }
 

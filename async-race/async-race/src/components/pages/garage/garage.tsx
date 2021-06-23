@@ -7,7 +7,6 @@ import StateInterface from "../../../interfaces/state-interface";
 import RaceWinner from "../../race-winner/race-winner";
 import GaragePagination from "../../pagination/garage-pagination";
 
-//FIXME: fix any type
 const Garage = ({winner, carAmount, currentPage}: any) => {
   return (
     <div className='mb-5'>

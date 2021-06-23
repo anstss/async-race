@@ -1,5 +1,6 @@
 import {carModels} from "./car-models";
 import store from "../store";
+import CarPositionInterface from "../interfaces/car-position-interface";
 
 export const generateRandColor = () => {
   let r = Math.floor(Math.random() * 256).toString(16);
@@ -23,3 +24,19 @@ export const checkIsActiveCar = (id: number) => {
   const activeCars = store.getState().activeCars;
   return activeCars.find((activeCarId: number) => activeCarId === id);
 }
+
+export const returnCurrentRef = (ref: any) => {
+  return ref.current;
+}
+
+export const getPosition = (id: number, carsPositions: CarPositionInterface[]) => {
+  const currentElem = carsPositions.find((elem: CarPositionInterface) => elem.id === id);
+  if (currentElem) {
+    return currentElem.currentPosition;
+  }
+}
+
+export const getCarIndex = (id: number) => {
+  return store.getState().cars.findIndex((car) => car.id === id);
+}
+

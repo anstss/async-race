@@ -1,27 +1,23 @@
 import "../pages.scss";
 import React, {useContext} from "react";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import Winner from "../../winner/winner";
 import StateInterface from "../../../interfaces/state-interface";
-import {connect} from "react-redux";
 import WinnersPagination from "../../pagination/winners-pagination";
-import {bindActionCreators, Dispatch} from "redux";
 import * as actions from "../../../actions";
 import {AsyncRaceApiServiceContext} from "../../async-race-api-service-context/async-race-api-service-context";
+import {SORT_BY_TIME, SORT_BY_WINS, WINNERS_PER_PAGE} from "../../../shared/constants";
 
-//FIXME: fix any type
 const Winners = ({
                    winners,
                    currentWinners,
                    currentWinnersPage,
-                   changeSortBy,
-                   setCurrentWinners,
-                 }: { winners: any, currentWinners: any, currentWinnersPage: number, changeSortBy: any,
-                   setCurrentWinners: any}) => {
+                 }: { winners: any, currentWinners: any, currentWinnersPage: number}) => {
 
   const asyncRaceApiService = useContext(AsyncRaceApiServiceContext);
 
-  //TODO: REFACTOR: sortby to const
-  //TODO: REFACTOR: move func from render pls (and remove copy-paste)
+
   return (
     <div className='mb-5'>
       <h2 className='page__title'>Winners ({winners.length})</h2>
@@ -32,33 +28,18 @@ const Winners = ({
           <div className='navbar-brand col'>Car</div>
           <div className='navbar-brand col'>Name</div>
           <div className='navbar-brand col interactive'
-               onClick={() => {
-                 changeSortBy('wins');
-                 asyncRaceApiService.getCurrentWinners(currentWinnersPage)
-                   .then((winners) => {
-                     setCurrentWinners(winners);
-                   })
-               }
-               }>Wins ↑↓</div>
+               onClick={() => asyncRaceApiService.sortBy(SORT_BY_WINS, currentWinnersPage)}>Wins ↑↓</div>
           <div className='navbar-brand col interactive'
-               onClick={() => {
-                 changeSortBy('time');
-                 asyncRaceApiService.getCurrentWinners(currentWinnersPage)
-                   .then((winners) => {
-                     setCurrentWinners(winners);
-                   })
-               }}>Best time (seconds) ↑↓</div>
+               onClick={() => asyncRaceApiService.sortBy(SORT_BY_TIME, currentWinnersPage)}>Best time (seconds) ↑↓</div>
         </li>
         {
-          //FIXME: fix any type
           currentWinners.map((car: any) => {
             const winnersWithInfo = winners.find((elem: any) => elem.id === car.id);
             if (!winnersWithInfo) {
               return null;
             }
             const {id, color, name, wins, time} = winnersWithInfo;
-            //TODO: refactor
-            const num = currentWinnersPage === 1 ? currentWinners.indexOf(car) + 1 : (currentWinners.indexOf(car) + 1) + ((currentWinnersPage - 1) * 10);
+            const num = (currentWinners.indexOf(car) + 1) + ((currentWinnersPage - 1) * WINNERS_PER_PAGE);
             return (
                 <li key={id}>
                   <Winner num={num} color={color} name={name} wins={wins} bestTime={time}/>

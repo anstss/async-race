@@ -1,6 +1,7 @@
 import CarInterface from "./interfaces/car-interface";
 import {AsyncRaceApiService} from "./services/async-race-api-service";
 import store from "./store";
+import {getCarIndex} from "./shared/utils";
 
 const asyncRaceApiService = new AsyncRaceApiService();
 
@@ -57,7 +58,6 @@ export const createCar = (car: CarInterface) => {
   }
 }
 
-//TODO: findCar()
 export const selectCar = (id: number) => {
   const cars = store.getState().cars;
   const car = cars.find(car => car.id === id);
@@ -69,17 +69,22 @@ export const selectCar = (id: number) => {
 
 export const updateCar = () => {
   const currentCarId = store.getState().selectedCar;
+  const currentCarIndex = getCarIndex(currentCarId!);
   return {
     type: 'UPDATE_CAR',
-    payload: currentCarId
+    payload: {
+      currentCarId,
+      currentCarIndex
+    }
   }
 }
 
 export const removeCar = (id: number) => {
   asyncRaceApiService.deleteCar(id);
+  const deletedCarIndex = getCarIndex(id);
   return {
     type: 'REMOVE_CAR',
-    payload: id
+    payload: deletedCarIndex
   }
 }
 
@@ -91,23 +96,26 @@ export const createHundredCars = (cars: CarInterface[]) => {
 }
 
 export const setAdditionalCarInfo = (id: number, carTrack: HTMLElement, carImage: HTMLElement) => {
+  const carIndex = getCarIndex(id);
    return {
      type: 'SET_ADDITIONAL_CAR_INFO',
-     payload: {id, carTrack, carImage}
+     payload: {carIndex, carTrack, carImage}
    }
 };
 
 export const updateCarWins = (id: number, wins: number, bestTime: number) => {
+  const winnerIndex = getCarIndex(id);
   return {
     type: 'UPDATE_CAR_WINS',
-    payload: {id, wins, bestTime}
+    payload: {winnerIndex, wins, bestTime}
   }
 }
 
 export const showAndSetCurrentWinner = (id: number, time: number) => {
+  const winnerIndex = getCarIndex(id);
   return {
     type: 'SHOW_AND_SET_CURRENT_WINNER',
-    payload: {id, time}
+    payload: {winnerIndex, time}
   }
 }
 
@@ -117,7 +125,6 @@ export const hideAndClearCurrentWinner = () => {
   }
 }
 
-//FIXME: fix any type
 export const updateAllWinners = (transformedWinners: any) => {
   return {
     type: 'UPDATE_ALL_WINNERS',
@@ -154,19 +161,12 @@ export const setWinnersAndWinnersPageAmount = (winnersAmount: number, winnersPag
   }
 }
 
-//FIXME: fix any type
 export const setCurrentWinners = (winners: any) => {
   return {
     type: 'SET_CURRENT_WINNERS',
     payload: winners
   }
 }
-//
-// export const switchStoreRaceMode = () => {
-//   return {
-//     type: 'SWITCH_STORE_RACE_MODE'
-//   }
-// }
 
 export const addActiveCar = (id: number) => {
   return {
@@ -176,13 +176,15 @@ export const addActiveCar = (id: number) => {
 }
 
 export const removeActiveCar = (id: number) => {
+  // const remoteCarIndex = getCarIndex(id);
+  // console.log(remoteCarIndex)
   return {
     type: 'REMOVE_ACTIVE_CAR',
     payload: id
   }
 }
 
-export const changeSortBy = (sortBy: 'string') => {
+export const changeSortBy = (sortBy: string) => {
   return {
     type: 'CHANGE_SORT_BY',
     payload: sortBy
@@ -206,15 +208,3 @@ export const clearCarPosition = (id: number) => {
     payload: id
   }
 }
-//
-// export const clearActiveCars = () => {
-//   return {
-//     type: 'CLEAR_ACTIVE_CARS'
-//   }
-// }
-
-// export const setNextPage = () => {
-//   return {
-//     type: 'SET_NEXT_PAGE'
-//   }
-// }
