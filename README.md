@@ -1,6 +1,6 @@
 # async-race
 
-Study project completed during the course RS School
+Training project completed during the course RS School
 
 Deploy: https://rolling-scopes-school.github.io/anstss-JSFE2021Q1/async-race/index.html
 
